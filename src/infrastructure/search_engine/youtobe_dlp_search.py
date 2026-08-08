@@ -1,11 +1,10 @@
 import yt_dlp
-import subprocess
 from src.infrastructure.helper import run_cli
 from src.infrastructure.python_logger import PythonLogger
 
 
 class YoutubeDLPClient:
-    def __init__(self, logger = None):
+    def __init__(self, logger=None):
         self.options = {
             "quiet": True,
             "extract_flat": True,
@@ -29,27 +28,35 @@ class YoutubeDLPClient:
             reverse=True,
         )
 
-    def download(self, video_url):
-        run_cli([
-            'youtube-dl',
-            video_url
-        ])
-
+    def download(self, video_url, output):
+        run_cli(
+            'yt-dlp',
+            video_url,
+            '-P',
+            str(output)
+        )
+        self.logger.info("Video downloaded")
 
 
 if __name__ == '__main__':
     from pprint import pprint
+    from src.config import Config
 
     # Sử dụng
     youtube = YoutubeDLPClient()
+
+    # Test search
     videos = youtube.search("Suriname", 10)
     for video in videos:
         pprint(video)
-        # pprint({
-        #     'uploader_url': video.get("uploader_url"),
-        #     "channel": video.get("channel"),
-        #     "title": video.get("title"),
-        #     "description": video.get("description"),
-        #     "url": video.get("url"),
-        #     "view_count": video.get("view_count"),
-        # })
+    # pprint({
+    #     'uploader_url': video.get("uploader_url"),
+    #     "channel": video.get("channel"),
+    #     "title": video.get("title"),
+    #     "description": video.get("description"),
+    #     "url": video.get("url"),
+    #     "view_count": video.get("view_count"),
+    # })
+
+    # Test download
+    # youtube.download('https://youtu.be/IjO79uKMkcw?si=3k8-Y2J41dYvVPAW', Config.DOWNLOADS)
