@@ -6,8 +6,8 @@ from pathlib import Path
 class Config:
     PROJECT_PATH = Path(__file__).resolve().parents[1]  # Đường dẫn file chính của dự án
 
-    # PATH_FOLDER_LOG = PROJECT_PATH / "logs"  # Đường dẫn đến folder chứa các file log
-    # PATH_FOLDER_LOG.mkdir(exist_ok=True)  # Tạo folder chứa các file log nếu chưa có
+    LOGFILES = PROJECT_PATH / "logfiles"  # Đường dẫn đến folder chứa các file log
+    LOGFILES.mkdir(exist_ok=True)  # Tạo folder chứa các file log nếu chưa có
 
     ENV_PATH = Path(PROJECT_PATH) / ".env"
     if not ENV_PATH.exists():

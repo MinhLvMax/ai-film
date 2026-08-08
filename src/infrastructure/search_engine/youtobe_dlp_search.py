@@ -1,14 +1,17 @@
 import yt_dlp
 import subprocess
+from src.infrastructure.helper import run_cli
+from src.infrastructure.python_logger import PythonLogger
 
 
 class YoutubeDLPClient:
-    def __init__(self):
+    def __init__(self, logger = None):
         self.options = {
             "quiet": True,
             "extract_flat": True,
             "skip_download": True,
         }
+        self.logger = logger or PythonLogger(name=__name__)
 
     def search(self, keyword, limit=5):
         with yt_dlp.YoutubeDL(self.options) as ydl:
@@ -27,7 +30,10 @@ class YoutubeDLPClient:
         )
 
     def download(self, video_url):
-
+        run_cli([
+            'youtube-dl',
+            video_url
+        ])
 
 
 

@@ -1,11 +1,11 @@
 import logging
 from logging.handlers import RotatingFileHandler
-
+from src.config import Config
 
 class PythonLogger:
     def __init__(self, name, path, enable_console=True):
         self.logger = logging.getLogger(name)
-
+        self.path = path or Config.LOGFILES
         self.logger.propagate = False
 
         if self.logger.handlers:
@@ -25,7 +25,7 @@ class PythonLogger:
             self.logger.addHandler(console)
 
         file = RotatingFileHandler(
-            path, maxBytes=1024 * 1024, backupCount=3, encoding="utf-8"
+            self.path, maxBytes=1024 * 1024, backupCount=3, encoding="utf-8"
         )
 
         file.setFormatter(formatter)
