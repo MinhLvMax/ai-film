@@ -4,13 +4,16 @@ from pathlib import Path
 
 
 class Config:
-    PROJECT_PATH = Path(__file__).resolve().parents[1]  # Đường dẫn file chính của dự án
+    PROJECT_PATH = Path(__file__).resolve().parents[1]  # Đường dẫn folder chính của dự án
 
     LOGFILES = PROJECT_PATH / "logfiles"  # Đường dẫn đến folder chứa các file log
-    LOGFILES.mkdir(exist_ok=True)  # Tạo folder chứa các file log nếu chưa có
+    LOGFILES.mkdir(exist_ok=True)
+
+    DATA = PROJECT_PATH / "data"  # Đường dẫn đến folder chứa data
+    DATA.mkdir(exist_ok=True)
 
     DOWNLOADS = PROJECT_PATH / "downloads"  # Đường dẫn đến folder chứa các file log
-    DOWNLOADS.mkdir(exist_ok=True)  # Tạo folder chứa các file log nếu chưa có
+    DOWNLOADS.mkdir(exist_ok=True)
 
     ENV_PATH = Path(PROJECT_PATH) / ".env"
     if not ENV_PATH.exists():
@@ -18,6 +21,18 @@ class Config:
 
     load_dotenv()  # Load các biến môi trường ở file .env
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")  # Load GROQ_API_KEY từ biến môi trường
+
+    PROMPTS = DATA / "prompts"
+    PROMPTS.mkdir(exist_ok=True)
+    SYSTEM_PROMPT = PROMPTS / "system_prompt.txt"
+    if not SYSTEM_PROMPT.exists():
+        SYSTEM_PROMPT.write_text('Enter the system prompt here.')
+    GENTOC_PROMPT = PROMPTS / "gentoc_prompt.txt"
+    if not GENTOC_PROMPT.exists():
+        GENTOC_PROMPT.write_text('Enter the GenTOC prompt here.')
+    GENCHAP_PROMPT = PROMPTS / "genchap_prompt.txt"
+    if not GENCHAP_PROMPT.exists():
+        GENCHAP_PROMPT.write_text('Enter the GenChapter prompt here.')
 
 
 if __name__ == '__main__':
