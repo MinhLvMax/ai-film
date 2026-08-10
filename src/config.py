@@ -12,8 +12,14 @@ class Config:
     DATA = PROJECT_PATH / "data"  # Đường dẫn đến folder chứa data
     DATA.mkdir(exist_ok=True)
 
-    DOWNLOADS = PROJECT_PATH / "downloads"  # Đường dẫn đến folder chứa các file log
-    DOWNLOADS.mkdir(exist_ok=True)
+    INPUT = DATA / "input"
+    INPUT.mkdir(exist_ok=True)
+
+    OUTPUT = DATA / "output"
+    OUTPUT.mkdir(exist_ok=True)
+
+    # DOWNLOADS = PROJECT_PATH / "downloads"  # Đường dẫn đến folder chứa các file log
+    # DOWNLOADS.mkdir(exist_ok=True)
 
     ENV_PATH = Path(PROJECT_PATH) / ".env"
     if not ENV_PATH.exists():

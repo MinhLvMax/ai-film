@@ -8,8 +8,8 @@ class GenContentDTO(BaseModel):
     gen_toc_prompt: str = Field(default='')
     toc: TableOfContents = Field(default=None)
     chaps: list[str] = Field(default_factory=list)
-    chapter_count: int = Field(ge=3)
+    chapter_count: int | str
     gen_chapter_prompt: str = Field(default='')
-    chapter_length: int = Field(ge=1)
+    chapter_length: int | str
     sleep_time: int = Field(ge=0)
     sources: list[str] = Field(default_factory=list)
