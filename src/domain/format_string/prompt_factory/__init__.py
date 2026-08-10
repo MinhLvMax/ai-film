@@ -1,0 +1,3 @@
+from .gen_toc_prompt_add_infor import GenTOCPrompt
+from .gen_chap_prompt_add_infor import GenChapPrompt
+from .system_prompt_add_infor import SystemPrompt

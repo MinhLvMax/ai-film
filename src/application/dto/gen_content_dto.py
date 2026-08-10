@@ -1,13 +1,15 @@
 from pydantic import BaseModel, Field
+from src.domain.schemas.table_of_contents import TableOfContents
 
 
-class GenContentInput(BaseModel):
+class GenContentDTO(BaseModel):
     title: str = Field(min_length=1)
     system_prompt: str = Field(default='')
     gen_toc_prompt: str = Field(default='')
+    toc: TableOfContents = Field(default=None)
+    chaps: list[str] = Field(default_factory=list)
+    chapter_count: int = Field(ge=3)
     gen_chapter_prompt: str = Field(default='')
+    chapter_length: int = Field(ge=1)
+    sleep_time: int = Field(ge=0)
     sources: list[str] = Field(default_factory=list)
-
-
-class GenContentOutput(BaseModel):
-    full_content: str = Field(default='')

@@ -31,3 +31,7 @@ class ContextManager:
             return history
 
         return [self.system_message, *history]
+
+    def get_dict_history(self, count: int | None = None) -> list[dict[str, str]]:
+        history = self.get_history(count)
+        return [m.__dict__ for m in history]

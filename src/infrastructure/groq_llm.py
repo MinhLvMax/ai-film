@@ -2,18 +2,10 @@ from pydantic import BaseModel
 from groq import Groq
 from typing import TypeVar
 from src.application.ports.logger_port import LoggerService
+from src.application.llm_complete_results import CompleteResult
 from src.infrastructure.python_logger import PythonLogger
 
 T = TypeVar("T", bound=BaseModel)  # T là kiểu bất kì nhưng phải kế thừa BaseModel
-
-
-class CompleteResult:
-    def __init__(self, content=None, total_tokens=None, total_time=None, cached_tokens=None, response_model=None):
-        self.content = content
-        self.total_tokens = total_tokens
-        self.total_time = total_time
-        self.cached_tokens = cached_tokens
-        self.response_model = response_model
 
 
 class GroqLLM:
@@ -37,10 +29,10 @@ class GroqLLM:
         Gửi yêu cầu hoàn thành nội dung tới mô hình Groq và nhận kết quả trả về.
         :param messages: Nội dung gửi tới LLM.
         :param response_model: Pydantic model dùng để validate structured output, nếu None, trả về chuỗi text, nếu có giá trị, kết quả JSON từ LLM sẽ được parse thành instance của model đó.
-        :return: Nội dung text do LLM sinh ra nếu không yêu cầu schema | Instance của Pydantic model nếu response_model được cung cấp.
+        :return:
         '''
         self.logger.info(f"{self.__class__.__name__}.{self.complete.__name__}")
-        self.logger.debug(f'{messages=}')
+        self.logger.debug(f'{messages[-1]=}')
 
         if isinstance(messages, str):
             messages = [{"role": "user", "content": messages}]
@@ -63,12 +55,30 @@ class GroqLLM:
 
         content = response.choices[0].message.content
 
+        usage = response.usage
+
+        total_tokens = getattr(usage, "total_tokens", 0) if usage else 0
+        total_time = getattr(usage, "total_time", 0) if usage else 0
+
+        prompt_tokens_details = getattr(
+            usage,
+            "prompt_tokens_details",
+            None,
+        ) if usage else None
+
+        cached_tokens = getattr(
+            prompt_tokens_details,
+            "cached_tokens",
+            0,
+        )
+
         complete_result = CompleteResult(
             content=content,
-            total_tokens=response.usage.total_tokens,
-            total_time=response.usage.total_time,
-            cached_tokens=response.usage.prompt_tokens_details.cached_tokens,
+            total_tokens=total_tokens,
+            total_time=total_time,
+            cached_tokens=cached_tokens,
         )
+        self.logger.debug(f'{complete_result.__dict__=}')
 
         if response_model is None:
             return complete_result
