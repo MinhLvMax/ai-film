@@ -1,5 +1,5 @@
 import time
-from src.application.llm_service import LLM
+from src.application.ports.llm_port import LLM
 from src.application.logger_service import LoggerService
 from src.application.context_manager import ContextManager, Message
 from src.application.dto.gen_content_dto import GenContentDTO
