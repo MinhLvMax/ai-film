@@ -76,10 +76,9 @@ class GenContent:
             role='assistant',
             content=str(toc.model_dump()),
         ))
-        input.toc = toc
-        chaps = self.gen_chap(input)
 
         input.toc = toc
+        chaps = self.gen_chap(input)
         input.chaps = chaps
 
         return input
