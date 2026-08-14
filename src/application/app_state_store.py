@@ -1,7 +1,8 @@
 from typing import Protocol
+
+from src.application.dto.gencontentdto import GenContentDTO
 from src.application.ports.file_reader_port import FileReaderPort
 from src.application.ports.file_writer_port import FileWriterPort
-from src.application.dto.gen_content_dto import GenContentDTO
 from src.config import Config
 
 

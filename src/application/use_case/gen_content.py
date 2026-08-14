@@ -1,8 +1,8 @@
 import time
 from src.application.ports.llm_port import LLM
 from src.application.logger_service import LoggerService
-from src.application.context_manager import ContextManager, Message
-from src.application.dto.gen_content_dto import GenContentDTO
+from src.application.message_manager import MessageManager, Message
+from src.application.dto.gencontentdto import GenContentDTO
 from src.application.llm_complete_results import CompleteResult
 from src.domain.schemas.table_of_contents import TableOfContents
 from src.domain.format_string.prompt_factory import GenTOCPrompt, GenChapPrompt
@@ -14,7 +14,7 @@ class GenContent:
             gen_toc_llm: LLM | None = None,  # 2 model này về sau phải nhận từ UI
             gen_chap_llm: LLM | None = None,
             logger: LoggerService | None = None,
-            context_manager: ContextManager | None = None,
+            context_manager: MessageManager | None = None,
     ):
         self.gen_toc_llm = gen_toc_llm
         self.gen_chap_llm = gen_chap_llm

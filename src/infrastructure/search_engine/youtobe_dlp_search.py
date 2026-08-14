@@ -13,6 +13,12 @@ class YoutubeDLPClient:
         self.logger = logger or PythonLogger(name=__name__)
 
     def search(self, keyword, limit=5):
+        '''
+        Nhận vào từ khóa tìm kiếm và trả ra dict kết quả
+        :param keyword:
+        :param limit:
+        :return:
+        '''
         with yt_dlp.YoutubeDL(self.options) as ydl:
             result = ydl.extract_info(
                 f"ytsearch{limit}:{keyword}",
@@ -29,6 +35,12 @@ class YoutubeDLPClient:
         )
 
     def download(self, video_url, output):
+        '''
+        Hàm này tải video dựa trên url nhưng rất hay bị chặn, nên tìm bằng cách khác
+        :param video_url:
+        :param output:
+        :return:
+        '''
         run_cli(
             'yt-dlp',
             video_url,
@@ -46,7 +58,7 @@ if __name__ == '__main__':
     youtube = YoutubeDLPClient()
 
     # Test search
-    videos = youtube.search("Suriname", 10)
+    videos = youtube.search("Life in Nauru", 10)
     for video in videos:
         pprint(video)
     # pprint({

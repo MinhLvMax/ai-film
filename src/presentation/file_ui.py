@@ -1,8 +1,8 @@
 from pprint import pprint
 import re
-from src.application.dto.gen_content_dto import GenContentDTO
-from src.infrastructure.text_reader import TextReader
-from src.infrastructure.text_writer import TextWriter
+from src.application.dto.gencontentdto import GenContentDTO
+from src.infrastructure.file_services.text_reader import TextReader
+from src.infrastructure.file_services.text_writer import TextWriter
 from src.bootstrap import build_gen_content
 from src.config import Config
 

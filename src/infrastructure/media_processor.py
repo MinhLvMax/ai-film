@@ -36,7 +36,7 @@ class MediaProcessor:
             audio_path
         ], check=True)
 
-    def extract_transcription(self, video_search_results: list[dict]):
+    def extract_transcription_by_ytta(self, video_search_results: list[dict]):
         '''
         Hàm này rút thêm transcript từ các kết quả video tìm kiếm được, nên rút ngắn số lượng video tìm kiếm được lại để tránh bị chặn ip
         Cách làm này rất hay bị chặn, có lẽ nên dùng cách khác
@@ -56,19 +56,22 @@ class MediaProcessor:
             })
         return video_search_results
 
+    def extract_transcription_by_extension(self, video_url: str):
+        ...
+
 
 if __name__ == '__main__':
     from pathlib import Path
     from pprint import pprint
+    from src.infrastructure.search_engine.youtobe_dlp_search import YoutubeDLPClient
 
     media_processor = MediaProcessor()
     video_path = Path(r'C:\Users\Admin\Downloads\videoplayback.mp4')
     # audio_path = video_path.parent / f'{video_path.stem}.m4a'
     # media_processor.extract_audio(video_path, audio_path)
 
-    from src.infrastructure.search_engine.youtobe_dlp_search import YoutubeDLPClient
-
     youtube_client = YoutubeDLPClient()
     search_results = youtube_client.search('SURINAME', limit=1)
-    transcription_result = media_processor.extract_transcription(search_results)
+
+    transcription_result = media_processor.extract_transcription_by_ytta(search_results)
     pprint(transcription_result)

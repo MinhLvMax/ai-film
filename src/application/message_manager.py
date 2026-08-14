@@ -7,7 +7,7 @@ class Message:
         self.content = content
 
 
-class ContextManager:
+class MessageManager:
     def __init__(self, system_message: Message | None = None, messages: list[Message] | None = None):
         self.system_message = system_message
         self.messages = messages or []
