@@ -27,6 +27,7 @@ class Config:
 
     load_dotenv()  # Load các biến môi trường ở file .env
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")  # Load GROQ_API_KEY từ biến môi trường
+    OPEN_API_KEY = os.getenv("OPEN_API_KEY")
 
     PROMPTS = DATA / "prompts"
     PROMPTS.mkdir(exist_ok=True)
@@ -42,4 +43,15 @@ class Config:
 
 
 if __name__ == '__main__':
-    print(Config.PROJECT_PATH)
+    # from openai import OpenAI
+    #
+    # OPEN_API_KEY = os.getenv("OPEN_API_KEY")  # Load OPENAI_API_KEY từ biến môi trường
+    # client = OpenAI(api_key=OPEN_API_KEY)
+    #
+    # response = client.responses.create(
+    #     model="gpt-5",
+    #     input="Xin chào, hãy giới thiệu bản thân."
+    # )
+    #
+    # print(response.output_text)
+    pass
