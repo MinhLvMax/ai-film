@@ -5,16 +5,17 @@ from src.presentation.layout.generation_layout.prompts_layout import prompts_lay
 
 
 async def generation_layout():
-    characters, shots, prompts = st.columns(
-        [1, 1, 1],
-        gap="small",
-        vertical_alignment="top",
-        border=True,
+    characters_tab, shots_tab, prompts_tab = st.tabs(
+        [
+            "Characters",
+            "Shots",
+            "Prompts",
+        ]
     )
 
-    with characters:
-        characters_layout()
-    with shots:
-        shots_layout()
-    with prompts:
+    with characters_tab:
+        await characters_layout()
+    with shots_tab:
+        await shots_layout()
+    with prompts_tab:
         await prompts_layout()

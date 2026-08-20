@@ -1,5 +1,5 @@
 from typing import Protocol
-from src.application.llm_complete_results import CompleteResult
+from src.application.dto.llm_complete_results import CompleteResult
 
 
 class LLM(Protocol):

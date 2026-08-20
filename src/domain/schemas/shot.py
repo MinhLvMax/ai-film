@@ -1,20 +1,22 @@
 from pydantic import BaseModel
 from src.domain.schemas.camera import Camera
-from src.domain.schemas.subject import Subject
+from src.domain.schemas.subject import SubjectLLMResult
 
 
 class ShotLLMResult(BaseModel):
     '''Class này là để model trả về những key cần thiết'''
-    shot_id: str
     subject_ids: list[str]
     action: str
     environment: str
+    camera: str
 
 
-class Shot(BaseModel):
+class ListShotLLMResult(BaseModel):
+    '''Class này chỉ để làm cái cho llm trả về thôi'''
+    shots: list[ShotLLMResult]
+
+
+class Shot(ShotLLMResult):
     '''Class này là để khi lưu json'''
     shot_id: str
-    subject: list[Subject]
-    action: str
-    environment: str
-    camera: Camera
+    subjects: list[SubjectLLMResult]

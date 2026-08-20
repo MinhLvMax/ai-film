@@ -10,7 +10,7 @@ from src.auto_gen.constant import GenMode, VideoModelNameString, ImageModelNameS
 from src.auto_gen.gen_service import GenService
 
 
-def build_gen_services(prompts):
+def send_prompts(prompts):
     context_factory_obj = ChromeContextFactory()
     user_profile = Config.PROJECT_PATH / r'src\auto_gen\profiles\user0'
     gen_context = context_factory_obj.create_context(user_profile=user_profile,
@@ -58,7 +58,7 @@ if __name__ == '__main__':
         },
     ]
 
-    build_gen_services(prompts)
+    send_prompts(prompts)
     pass
 
 # ===========

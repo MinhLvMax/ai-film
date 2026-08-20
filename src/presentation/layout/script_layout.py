@@ -9,7 +9,7 @@ async def script_layout():
         type=["csv", "txt"]
     )
 
-    st.text_area(
+    st.session_state['script_content'] = st.text_area(
         label=UIString.SCRIPT_CONTENT_LABEL,
         placeholder=UIString.SCRIPT_PLACE_HOLDER,
         value=get_uploaded_text(uploaded_script_file),

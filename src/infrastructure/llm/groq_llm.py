@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from groq import Groq
 from typing import TypeVar
 from src.application.ports.logger_port import LoggerService
-from src.application.llm_complete_results import CompleteResult
+from src.application.dto.llm_complete_results import CompleteResult
 from src.infrastructure.python_logger import PythonLogger
 
 T = TypeVar("T", bound=BaseModel)  # T là kiểu bất kì nhưng phải kế thừa BaseModel

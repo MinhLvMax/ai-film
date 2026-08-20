@@ -3,7 +3,7 @@ from src.application.ports.llm_port import LLM
 from src.application.logger_service import LoggerService
 from src.application.message_manager import MessageManager, Message
 from src.application.dto.gencontentdto import GenContentDTO
-from src.application.llm_complete_results import CompleteResult
+from src.application.dto.llm_complete_results import CompleteResult
 from src.domain.schemas.table_of_contents import TableOfContents
 from src.domain.format_string.prompt_factory import GenTOCPrompt, GenChapPrompt
 
