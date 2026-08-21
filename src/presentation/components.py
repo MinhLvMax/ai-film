@@ -94,11 +94,12 @@ class UIString:
 
     ]
 
+    ANALYZING = 'Analyzing...'
     UPLOAD_PROMPT_LABEL = '**Upload prompt file**'
     STYLE_LOCK_LABEL = '**Style lock**'
     STYLE_LOCK_PLACEHOLDER = "Cinematic, photorealistic visual style with natural lighting, realistic textures, consistent color grading, ..."
     SELECT_MODEL_LABEL = "**Select a model:**"
-    ANALYSIS = 'Phân tích'
+    ANALYSIS = 'Trích xuất'
 
     # Page
     page_title = "Minh Prompt"
@@ -130,6 +131,7 @@ class UIString:
     # Prompts
     prompts_title = "**Danh sách prompt**"
     SEND_ALL = ":material/send: Gửi toàn bộ"
+    GEN_PROMPT = 'Tạo prompts'
 
     LIST_MODEL = [
         'gpt-4.1-nano',
@@ -182,9 +184,9 @@ def create_id(prefix: str = ''):
     return f"{prefix}_{str(uuid.uuid4())}"
 
 
-def print_data_table(data: dict):
+def print_data_table(data: list[dict]):
     '''Dùng để hiển thị dữ liệu dạng bảng'''
-    df = pd.DataFrame(data)
+    df = pd.json_normalize(data)
     st.dataframe(df)
 
 

@@ -1,10 +1,12 @@
 import streamlit as st
+
+from src.presentation.app_state import AppState
 from src.presentation.layout.generation_layout.characters_layout import characters_layout
 from src.presentation.layout.generation_layout.shots_layout import shots_layout
 from src.presentation.layout.generation_layout.prompts_layout import prompts_layout
+from src.presentation.app_state import AppState
 
-
-async def generation_layout():
+async def generation_layout(state: AppState):
     characters_tab, shots_tab, prompts_tab = st.tabs(
         [
             "Characters",
@@ -14,8 +16,8 @@ async def generation_layout():
     )
 
     with characters_tab:
-        await characters_layout()
+        await characters_layout(state)
     with shots_tab:
-        await shots_layout()
+        await shots_layout(state)
     with prompts_tab:
-        await prompts_layout()
+        await prompts_layout(state)

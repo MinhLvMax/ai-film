@@ -20,7 +20,7 @@ class GroqLLM:
         self.client = Groq(api_key=api_key)
         self.logger = logger or PythonLogger(__name__)
 
-    def complete(
+    async def complete(
             self,
             messages: list[dict] | str,
             response_model: type[T] | None = None,

@@ -8,7 +8,7 @@ class GenPrompt:
         self.file_reader = file_reader
         self.gen_prompt_from_segment_path = gen_prompt_from_segment_path
 
-    def gen_prompt_from_a_segment(self, segment_content: str):
+    async def gen_prompt_from_a_segment(self, segment_content: str):
         '''
         Nhận đoạn từ phía UI để gen ra bộ prompt cho đoạn đó
         :param segment_content:
@@ -16,5 +16,5 @@ class GenPrompt:
         '''
         gen_prompt_from_segment = self.file_reader.read(self.gen_prompt_from_segment_path).format(
             screenplay_segment=segment_content)
-        complete_result = self.llm.complete(gen_prompt_from_segment)
+        complete_result = await self.llm.complete(gen_prompt_from_segment)
         return json.loads(complete_result.content)

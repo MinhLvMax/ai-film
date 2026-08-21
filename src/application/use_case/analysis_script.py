@@ -4,19 +4,21 @@ import unicodedata
 from src.application.ports.llm_port import LLM
 from src.domain.schemas.subject import ListSubjectLLMResult, Subject
 from src.domain.schemas.shot import ListShotLLMResult, Shot
+from src.infrastructure import llm
 
 
 class AnalysisScript:
     def __init__(self, llm: LLM):
         self.llm = llm
 
-    def extract_chars(self, prompt, model, content):
+    async def extract_chars(self, prompt, model, content):
         prompt = (
-            f'{prompt}\n'
-            '[Content to be extracted]\n'
-            f'{content}\n'
+            f"{prompt}\n"
+            "<content>\n"
+            f"{content}\n"
+            "</content>\n"
         )
-        complete_result = self.llm.complete(messages=prompt, response_model=ListSubjectLLMResult, llm_model=model)
+        complete_result = await self.llm.complete(messages=prompt, response_model=ListSubjectLLMResult, llm_model=model)
         chars_lln_res: ListSubjectLLMResult = complete_result.response_model
         subjects = [
             Subject(
@@ -27,32 +29,49 @@ class AnalysisScript:
         ]
         return subjects
 
-    def extract_shots_for_section(self, prompt, model, section, title, chars):
+    async def extract_shots(self, prompt, model, content, chars):
+        sections = self._sreenplay_chunking(content)
+        results = []
+        for section in sections:
+            shots_for_section = await self.extract_shots_for_section(
+                prompt=prompt,
+                model=model,
+                section=section['content'],
+                title=section['title'],
+                chars=chars,
+            )
+            results.extend(shots_for_section)
+            yield shots_for_section
+
+    async def extract_shots_for_section(self, prompt, model, section, title, chars):
+        chars_ids = [char["id"] for char in chars]
         prompt = (
-            f'{prompt}\n'
-            '[Content to be extracted]\n'
-            f'{section}\n'
+            f"{prompt}\n\n"
+            "<content>\n"
+            f"{section}\n"
+            "</content>\n\n"
+            "<character_ids>\n"
+            f"{', '.join(chars_ids)}\n"
+            "</character_ids>"
         )
-        complete_result = self.llm.complete(messages=prompt, response_model=ListShotLLMResult, llm_model=model)
+        complete_result = await self.llm.complete(messages=prompt, response_model=ListShotLLMResult, llm_model=model)
         list_shots_llm_res: ListShotLLMResult = complete_result.response_model
         shots = [
             Shot(
                 shot_id=str(uuid.uuid4()),
-                subjects=[
-                    next(
-                        (char for char in chars if char["id"] == subject_id),
-                        None
-                    )
-                    for subject_id in shot.subject_ids
-                ],
+                # subjects=[
+                #     next(
+                #         (char for char in chars if char["id"] == subject_id),
+                #         None
+                #     )
+                #     for subject_id in shot.subject_ids
+                # ],
+                section=title,
                 **shot.model_dump(),
             ).model_dump()
             for shot in list_shots_llm_res.shots
         ]
-        return {
-            'section': title,
-            'shots': shots,
-        }
+        return shots
 
     def _sreenplay_chunking(self, content):
         '''
@@ -62,34 +81,28 @@ class AnalysisScript:
                 "content": nội dung đoạn,
             }, ...]
         '''
-        pattern = re.compile(
-            r'(?m)^[A-ZÁÉÍÓÚÜÑ0-9][A-ZÁÉÍÓÚÜÑ0-9\s:,\-–—\'".!?()&]+$'
-        )
+        # Chuẩn hóa line ending Windows / Linux
+        content = content.replace("\r\n", "\n").replace("\r", "\n").strip()
 
-        matches = list(pattern.finditer(content))
+        # Tách section tại ít nhất một dòng trống
+        sections = re.split(r"\n\s*\n+", content)
 
         chunks = []
 
-        # Content trước section đầu tiên
-        if matches and content[:matches[0].start()].strip():
-            chunks.append({
-                "title": None,
-                "content": content[:matches[0].start()].strip(),
-            })
+        for section in sections:
+            section = section.strip()
 
-        for i, match in enumerate(matches):
-            title = match.group().strip()
+            if not section:
+                continue
 
-            start = match.end()
-            end = (
-                matches[i + 1].start()
-                if i + 1 < len(matches)
-                else len(content)
-            )
+            lines = section.splitlines()
+
+            title = lines[0].strip()
+            body = "\n".join(lines[1:]).strip()
 
             chunks.append({
                 "title": title,
-                "content": content[start:end].strip(),
+                "content": body,
             })
 
         return chunks

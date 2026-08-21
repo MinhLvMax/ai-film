@@ -19,4 +19,5 @@ class ListShotLLMResult(BaseModel):
 class Shot(ShotLLMResult):
     '''Class này là để khi lưu json'''
     shot_id: str
-    subjects: list[SubjectLLMResult]
+    # subjects: list[SubjectLLMResult]
+    section: str

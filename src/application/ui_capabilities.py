@@ -12,25 +12,24 @@ class UICapabilities:
         # return chars, shots
         pass
 
-    def send_prompts(self, prompts):
+    async def send_prompts(self, prompts):
         self.send_prompts(prompts)
 
-    def extract_chars(self, prompt, model, content):
+    async def extract_chars(self, prompt, model, content):
         '''Trích xuất nhân vật'''
-        return self.analysis_script.extract_chars(
+        return await self.analysis_script.extract_chars(
             prompt=prompt,
             model=model,
             content=content
         )
 
-    def extract_shots(self, prompt, model, section, title, chars):
-        '''Trích xuất cảnh'''
-        self.analysis_script.extract_shots_for_section(
+    def extract_shots(self, prompt, model, content, chars):
+        '''Trích xuất cảnh từ 1 đoạn của content, nên phân đoạn content ở giao diện trước để làm xong đến đâu view đến đấy'''
+        return self.analysis_script.extract_shots(
             prompt=prompt,
-            section=section,
-            title=title,
             model=model,
-            chars=chars
+            content=content,
+            chars=chars,
         )
 
     def build_prompt(self, shots):
