@@ -1,10 +1,12 @@
 from src.application.use_case.analysis_script import AnalysisScript
+from src.application.use_case.login_profile import login_profile
 
 
 class UICapabilities:
-    def __init__(self, analysis_script: AnalysisScript, send_prompts):
+    def __init__(self, analysis_script: AnalysisScript, send_prompts, build_prompt):
         self.analysis_script = analysis_script
         self.send_prompts = send_prompts
+        self.build_prompt_method = build_prompt
 
     def analyze_script(self, content, extract_char_prompt, extract_shot_prompt):
         # chars = self.analysis_script.extract_chars(extract_char_prompt, content)
@@ -32,8 +34,10 @@ class UICapabilities:
             chars=chars,
         )
 
-    def build_prompt(self, shots):
+    def build_prompt(self, style_lock, chars, shots):
         '''Xây dựng prompt từ cảnh'''
+        return self.build_prompt_method(style_lock, chars, shots)
 
-    def sign_in_google(self):
+    async def sign_in_google(self):
         '''Đăng nhập nick mà đăng kí tài khoản google flow'''
+        await login_profile()

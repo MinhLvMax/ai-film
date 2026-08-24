@@ -8,6 +8,7 @@ from src.infrastructure.llm.openai_llm import OpenAILLM
 # from src.application.use_case.gen_content import GenContent
 # from src.application.use_case.gen_prompts import GenPrompt
 from src.application.use_case.analysis_script import AnalysisScript
+from src.application.use_case.build_prompt import build_prompt_from_chars_and_shots
 from src.application.ui_capabilities import UICapabilities
 from src.config import Config
 
@@ -50,7 +51,8 @@ def build_ui_capabilities():
     analysis_script = AnalysisScript(llm)
     from src.auto_gen.main import send_prompts
     send_prompts = send_prompts
-    return UICapabilities(analysis_script, send_prompts)
+    return UICapabilities(analysis_script, send_prompts, build_prompt_from_chars_and_shots)
+
 
 uicapabilities = build_ui_capabilities()
 

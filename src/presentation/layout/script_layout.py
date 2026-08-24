@@ -2,7 +2,7 @@ import streamlit as st
 
 from src.presentation.app_state import AppState
 from src.presentation.components import UIString, get_uploaded_text
-from src.presentation.actions import analysis_script
+# from src.presentation.actions import analysis_script
 
 
 async def script_layout(state: AppState):
@@ -18,12 +18,12 @@ async def script_layout(state: AppState):
         height='content'
     )
 
-    analysis_btn = st.button(
-        UIString.SCRIPT_ANALYSIS_LABEL,
-        use_container_width=True,
-        help=UIString.SCRIPT_ANALYZE_HELP,
-        key="script_analyze",
-    )
-
-    if analysis_btn:
-        await analysis_script(state)
+    # analysis_btn = st.button(
+    #     UIString.SCRIPT_ANALYSIS_LABEL,
+    #     use_container_width=True,
+    #     help=UIString.SCRIPT_ANALYZE_HELP,
+    #     key="script_analyze",
+    # )
+    #
+    # if analysis_btn:
+    #     await analysis_script(state)

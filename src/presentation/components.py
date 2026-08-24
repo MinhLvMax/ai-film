@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
+import io
 from io import BytesIO
 import uuid
+from pathlib import Path
 
 
 # :material/settings:
@@ -23,78 +25,10 @@ import uuid
 # :material/send:
 
 class UIString:
-    # Mock data
-    CHARACTERS_MOCK_DATA = [
-        {
-            "id": "con_cho",
-            "name": "Con chó",
-            "description": "Một con chó lông đen, kích thước trung bình, đôi mắt nâu và chiếc vòng cổ màu đỏ.",
-        },
-        {
-            "id": "nguyen_anh",
-            "name": "Nguyễn Anh",
-            "description": "Một người đàn ông khoảng 30 tuổi, tóc đen ngắn, dáng người cao, thường mặc áo sơ mi trắng.",
-        },
-        {
-            "id": "co_gai",
-            "name": "Cô gái",
-            "description": "Một cô gái trẻ khoảng 25 tuổi, tóc dài màu nâu, khuôn mặt thanh tú và thường mặc váy xanh.",
-        },
-    ]
-    SHOTS_MOCK_DATA = [
-        {
-            "shot_id": "shot_001",
-            "subject_ids": ["con_cho", "nguyen_anh"],
-            "action": "Nguyễn Anh bước chậm về phía con chó và cúi xuống vuốt ve nó.",
-            "environment": "Một con hẻm yên tĩnh vào buổi chiều, ánh nắng nhẹ chiếu qua những tán cây.",
-            "camera": "Medium shot, camera đặt ngang tầm mắt, chuyển động dolly chậm theo nhân vật.",
-            "subjects": [
-                {
-                    "id": "con_cho",
-                    "name": "Con chó",
-                    "description": "Một con chó lông đen, kích thước trung bình, đôi mắt nâu và chiếc vòng cổ màu đỏ.",
-                },
-                {
-                    "id": "nguyen_anh",
-                    "name": "Nguyễn Anh",
-                    "description": "Một người đàn ông khoảng 30 tuổi, tóc đen ngắn, dáng người cao, mặc áo sơ mi trắng.",
-                },
-            ],
-        },
-        {
-            "shot_id": "shot_002",
-            "subject_ids": ["con_cho"],
-            "action": "Con chó ngẩng đầu nhìn Nguyễn Anh rồi vẫy đuôi.",
-            "environment": "Con hẻm yên tĩnh với những bức tường cũ và ánh nắng vàng dịu.",
-            "camera": "Close-up shot tập trung vào khuôn mặt và chiếc đuôi của con chó.",
-            "subjects": [
-                {
-                    "id": "con_cho",
-                    "name": "Con chó",
-                    "description": "Một con chó lông đen, kích thước trung bình, đôi mắt nâu và chiếc vòng cổ màu đỏ.",
-                },
-            ],
-        },
-        {
-            "shot_id": "shot_003",
-            "subject_ids": ["nguyen_anh"],
-            "action": "Nguyễn Anh đứng dậy, mỉm cười và nhìn về cuối con hẻm.",
-            "environment": "Con hẻm vào lúc hoàng hôn, ánh sáng vàng phủ lên các bức tường và mặt đường.",
-            "camera": "Wide shot từ phía sau nhân vật, camera từ từ kéo ra để mở rộng khung cảnh.",
-            "subjects": [
-                {
-                    "id": "nguyen_anh",
-                    "name": "Nguyễn Anh",
-                    "description": "Một người đàn ông khoảng 30 tuổi, tóc đen ngắn, dáng người cao, mặc áo sơ mi trắng.",
-                },
-            ],
-        },
-    ]
-    PROMPT_MOCK_DATA = [
-
-    ]
-
+    SIGN_IN = 'Sign In'
     ANALYZING = 'Analyzing...'
+    UPLOAD_SHOT_LABEL = '**Upload shot file**'
+    UPLOAD_CHAR_LABEL = '**Upload chars file**'
     UPLOAD_PROMPT_LABEL = '**Upload prompt file**'
     STYLE_LOCK_LABEL = '**Style lock**'
     STYLE_LOCK_PLACEHOLDER = "Cinematic, photorealistic visual style with natural lighting, realistic textures, consistent color grading, ..."
@@ -198,6 +132,57 @@ def select_model(key: str, list_model: list[str] | None = None):
         options=list_model,
         key=key
     )
+
+
+def read_uploaded_file(uploaded_file) -> list[dict]:
+    """Đọc file CSV/XLSX của Streamlit thành list[dict]."""
+
+    suffix = Path(uploaded_file.name).suffix.lower()
+    content = uploaded_file.getvalue()
+
+    if suffix == ".csv":
+        df = pd.read_csv(
+            io.BytesIO(content),
+            encoding="utf-8-sig"
+        )
+
+    elif suffix == ".xlsx":
+        df = pd.read_excel(
+            io.BytesIO(content)
+        )
+
+    else:
+        raise ValueError(f"Unsupported file format: {suffix}")
+
+    # Bỏ các cột index thừa do pandas/Excel export tạo ra
+    df = df.loc[:, ~df.columns.str.match(r"^Unnamed")]
+
+    # NaN -> None
+    df = df.astype(object).where(pd.notna(df), None)
+
+    # Chuyển NaN của pandas thành None
+    df = df.where(pd.notna(df), None)
+
+    data = df.to_dict(orient="records")
+
+    # Khôi phục subject_ids về list[str]
+    for row in data:
+        if "subject_ids" not in row:
+            continue
+
+        subject_ids = row["subject_ids"]
+
+        if subject_ids is None:
+            row["subject_ids"] = []
+
+        elif isinstance(subject_ids, str):
+            row["subject_ids"] = [
+                subject_id.strip()
+                for subject_id in subject_ids.split(",")
+                if subject_id.strip()
+            ]
+
+    return data
 
 # def text_area(key_session, **kwargs):
 #

@@ -1,3 +1,5 @@
+import time
+
 from playwright.sync_api import Page, Locator, expect
 import random
 
@@ -7,21 +9,6 @@ class BasePage:
 
     def __init__(self, page):
         self.page: Page = page
-
-    def pause_page(self):
-        self.page.pause()
-
-    def close_page(self):
-        self.page.close()
-
-    def go_to_this_page(self):
-        '''
-        Tự di chuyển đến chính nó, khi nhảy nhiều page quá thì muốn quay lại page chính nó thì gọi hàm này
-        '''
-        if self.url is None:
-            raise NotImplementedError("Page phải khai báo url")
-        self.page.goto(self.url, wait_until='load')
-        self.wait_util_loaded()
 
     def wait_util_loaded(self):
         print("Loading page...")
@@ -52,20 +39,11 @@ class BasePage:
             if locator != None:
                 self.random_time_click(locator)
 
-    def wait_for_seconds(self, seconds: float = 2):
+    def wait_for_seconds(self, seconds: float= 2):
         """
         Hard wait for fixed seconds.
         """
         self.page.wait_for_timeout(seconds * 1000)
-
-    def wait_visible(self, locator, timeout=30000):
-        expect(locator).to_be_visible(timeout=timeout)
-
-    def wait_hidden(self, locator, timeout=30000):
-        expect(locator).to_be_hidden(timeout=timeout)
-
-    def wait_enabled(self, locator, timeout=30000):
-        expect(locator).to_be_enabled(timeout=timeout)
 
     def debug_locator(self, locator: Locator):
         count = locator.count()

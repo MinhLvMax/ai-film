@@ -1,9 +1,10 @@
 import json
 from src.application.ports.file_reader_port import FileReaderPort
+from src.application.ports.llm_port import LLM
 
 
 class GenPrompt:
-    def __init__(self, file_reader: FileReaderPort, llm, gen_prompt_from_segment_path: str):
+    def __init__(self, file_reader: FileReaderPort, llm: LLM, gen_prompt_from_segment_path: str):
         self.llm = llm
         self.file_reader = file_reader
         self.gen_prompt_from_segment_path = gen_prompt_from_segment_path
@@ -18,3 +19,4 @@ class GenPrompt:
             screenplay_segment=segment_content)
         complete_result = await self.llm.complete(gen_prompt_from_segment)
         return json.loads(complete_result.content)
+

@@ -6,6 +6,13 @@ IMPORTANT:
 Do NOT split by sentences.
 Split by visual beats.
 
+OUTPUT LANGUAGE
+
+- Write all generated shot descriptions in English, regardless of the language of the input narrative.
+- The fields action, environment, and camera must always be written in natural professional English.
+- Do not translate or modify the provided subject IDs.
+- Preserve subject IDs exactly as provided.
+
 A single sentence may produce one, two, three, or more shots.
 
 For each shot:

@@ -20,4 +20,4 @@ class Shot(ShotLLMResult):
     '''Class này là để khi lưu json'''
     shot_id: str
     # subjects: list[SubjectLLMResult]
-    section: str
+    section: str  # Chứa tên của section để biết nó nằm trong section nào

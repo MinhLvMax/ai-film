@@ -41,6 +41,11 @@ class Config:
     if not GENCHAP_PROMPT.exists():
         GENCHAP_PROMPT.write_text('Enter the GenChapter prompt here.')
 
+    BROWSER_PROFILES = DATA / "browser_profiles"
+    BROWSER_PROFILES.mkdir(exist_ok=True)
+
+    BROWSER_DOWNLOAD_PATH = r"C:\Users\Admin\Downloads"
+
 
 if __name__ == '__main__':
     # from openai import OpenAI

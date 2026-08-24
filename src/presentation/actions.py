@@ -4,13 +4,23 @@ from src.presentation.components import UIString, print_data_table
 from src.bootstrap import uicapabilities
 
 
-async def analysis_script(state: AppState):
-    content = state.script_content
+# async def analysis_script(state: AppState):
+#     content = state.script_content
+#     pass
+
+
+async def send_prompts(state: AppState):
+    await uicapabilities.send_prompts(state.prompts)
     pass
 
 
-async def send_prompts(prompts):
-    pass
+async def create_prompt(state: AppState):
+    prompts = await uicapabilities.build_prompt(
+        state.style_lock,
+        state.characters,
+        state.shots,
+    )
+    state.prompts = prompts
 
 
 async def characters_analyze(state: AppState):
@@ -41,3 +51,6 @@ async def shots_analyze(state: AppState):
         state.shots.extend(shots)
         with table.container():
             print_data_table(state.shots)
+
+async def sign_in():
+    await uicapabilities.sign_in_google()
