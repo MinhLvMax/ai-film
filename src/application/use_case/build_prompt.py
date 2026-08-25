@@ -65,6 +65,7 @@ async def build_prompt_from_chars_and_shots(style_lock: str, chars: dict, shots:
             "shot_id": shot["shot_id"],
             "section": shot["section"],
             "prompt": prompt,
+            'is_sent': False,
         })
 
     return results

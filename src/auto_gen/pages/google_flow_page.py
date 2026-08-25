@@ -1,4 +1,3 @@
-import re
 from playwright.sync_api import Page
 from src.auto_gen.pages.base_page import BasePage
 from src.auto_gen.pages.google_flow_project_page import GoogleFlowProjectPage
@@ -44,8 +43,3 @@ class GoogleFlowPage(BasePage):
             return self._open_exist_project_page(project_name)
         else:
             return self._create_new_project(project_name)
-
-
-
-
-

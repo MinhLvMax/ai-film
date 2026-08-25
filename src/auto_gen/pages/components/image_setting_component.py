@@ -4,6 +4,8 @@ from playwright.sync_api import Page
 from src.auto_gen.pages.components.base_component import BaseComponent
 from src.auto_gen.constant import ImageModelNameString, RatiosMode
 from src.auto_gen.pages.generation_config import ImageGenerationConfig
+
+
 class ImageSettingComponent(BaseComponent):
     def __init__(self, page: Page):
         super().__init__(page)
@@ -68,6 +70,7 @@ class ImageSettingComponent(BaseComponent):
             self.random_time_click(locator)
         self.close_component()
 
+
 class ListImageModelComponent(BaseComponent):
     def __init__(self, page: Page):
         super().__init__(page)
@@ -82,4 +85,3 @@ class ListImageModelComponent(BaseComponent):
             return self.nano_2
         if model_name == ImageModelNameString.Nano_Banana_2_lite:
             return self.nano_2_lite
-

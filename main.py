@@ -15,3 +15,5 @@ if not USER_DATA_DIR.exists():
     login_profile()
 
 asyncio.run(main())
+
+#streamlit run main.py --server.runOnSave true

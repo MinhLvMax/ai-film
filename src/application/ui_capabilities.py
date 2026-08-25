@@ -3,10 +3,10 @@ from src.application.use_case.login_profile import login_profile
 
 
 class UICapabilities:
-    def __init__(self, analysis_script: AnalysisScript, send_prompts, build_prompt):
+    def __init__(self, analysis_script: AnalysisScript, build_prompt_method, send_prompt_method):
         self.analysis_script = analysis_script
-        self.send_prompts = send_prompts
-        self.build_prompt_method = build_prompt
+        self.build_prompt_method = build_prompt_method
+        self.send_prompt_method = send_prompt_method
 
     def analyze_script(self, content, extract_char_prompt, extract_shot_prompt):
         # chars = self.analysis_script.extract_chars(extract_char_prompt, content)
@@ -14,8 +14,24 @@ class UICapabilities:
         # return chars, shots
         pass
 
-    async def send_prompts(self, prompts):
-        self.send_prompts(prompts)
+    async def send_prompts(self,
+                           prompts,
+                           generation_mode,
+                           ratio,
+                           quantity,
+                           duration,
+                           model,
+                           project_name,
+                           ):
+        '''Gửi prompt để tạo các video'''
+
+        await self.send_prompt_method(prompts,
+                                      generation_mode,
+                                      ratio,
+                                      quantity,
+                                      duration,
+                                      model,
+                                      project_name, )
 
     async def extract_chars(self, prompt, model, content):
         '''Trích xuất nhân vật'''

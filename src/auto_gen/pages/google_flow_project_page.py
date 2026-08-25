@@ -48,12 +48,6 @@ class GoogleFlowProjectPage(BasePage):
             re.compile(r"image\d+%.*")
         )
 
-        # Các locator nhận diện video đang tạo
-        # # 1. Vừa submit, chưa có Queue, chưa có %
-        # self.submitting_video = page.get_by_text(
-        #     re.compile(r"^play_circle(?!\s+\d+%).*")
-        # )
-
         # 2. Đang Queue
         self.queued_video = page.get_by_role(
             "button",

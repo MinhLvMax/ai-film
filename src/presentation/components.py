@@ -4,6 +4,7 @@ import io
 from io import BytesIO
 import uuid
 from pathlib import Path
+from src.domain import ImageModel, VideoModels, Ratio, Quantity, VideoGenerationMode, Durations
 
 
 # :material/settings:
@@ -25,6 +26,23 @@ from pathlib import Path
 # :material/send:
 
 class UIString:
+    DURATIONS = list(Durations)
+    QUANTITYS = list(Quantity)
+    RATIOS = list(Ratio)
+    VIDEO_GEN_MODES = list(VideoGenerationMode)
+    VIDEO_GEN_MODELS = list(VideoModels)
+    IMAGE_GEN_MODELS = list(ImageModel)
+
+    PROJECT_NAME_LABEL = 'PROJECT NAME'
+    DEFAULT_PROJECT_NAME = 'Default project name'
+    PROJECT_NAME_PLACEHOLDER = 'Nhập tên dự án'
+    IMAGE_GEN_MODEL_LABEL = 'Image generation model'
+    VIDEO_GEN_MODEL_LABEL = 'Video generation model'
+    RATIO_LABEL = 'Ratio'
+    QUANTITY_LABEL = 'Quantity'
+    DURATION_LABEL = 'Duration'
+    VIDEO_GEN_MODE_LABEL = 'Video generation mode'
+
     SIGN_IN = 'Sign In'
     ANALYZING = 'Analyzing...'
     UPLOAD_SHOT_LABEL = '**Upload shot file**'

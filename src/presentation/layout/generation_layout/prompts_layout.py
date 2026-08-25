@@ -1,7 +1,7 @@
 import streamlit as st
 from src.presentation.app_state import AppState
 from src.presentation.components import UIString, read_uploaded_file, print_data_table
-from src.presentation.actions import send_prompts, create_prompt
+from src.presentation.actions import create_prompt
 
 
 async def prompts_layout(state: AppState):
@@ -19,17 +19,9 @@ async def prompts_layout(state: AppState):
         label=UIString.UPLOAD_PROMPT_LABEL,
         type=["xlsx", 'csv']
     )
-    auto_send_btn = st.button(
-        UIString.SEND_ALL,
-        use_container_width=True,
-        key="prompts_generate_all",
-        # disabled=not state.prompts,
-    )
-    if auto_send_btn:
-        await send_prompts(state)
-    if gen_all_prompts:
-        await create_prompt(state)
     if uploaded_prompt_file is not None:
         state.prompts = read_uploaded_file(uploaded_prompt_file)
+    if gen_all_prompts:
+        await create_prompt(state)
     if state.prompts:
         print_data_table(state.prompts)

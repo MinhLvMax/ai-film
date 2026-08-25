@@ -4,14 +4,16 @@ from src.presentation.components import UIString, print_data_table
 from src.bootstrap import uicapabilities
 
 
-# async def analysis_script(state: AppState):
-#     content = state.script_content
-#     pass
-
-
-async def send_prompts(state: AppState):
-    await uicapabilities.send_prompts(state.prompts)
-    pass
+async def send_prompts_video_only(state: AppState):
+    await uicapabilities.send_prompts(
+        state.prompts,
+        state.video_gen_mode,
+        state.video_ratio,
+        state.video_quality,
+        state.video_duration,
+        state.video_gen_model,
+        state.project_name
+    )
 
 
 async def create_prompt(state: AppState):
@@ -41,7 +43,6 @@ async def characters_analyze(state: AppState):
 async def shots_analyze(state: AppState):
     if state.shots is None:
         state.shots = []
-    table = st.empty()
     async for shots in uicapabilities.extract_shots(
             prompt=state.extract_shots_prompt,
             model=state.extract_shots_model,
@@ -49,8 +50,8 @@ async def shots_analyze(state: AppState):
             chars=state.characters,
     ):
         state.shots.extend(shots)
-        with table.container():
-            print_data_table(state.shots)
+        st.rerun()
+
 
 async def sign_in():
     await uicapabilities.sign_in_google()
