@@ -21,17 +21,21 @@ class UICapabilities:
                            quantity,
                            duration,
                            model,
+                           max_creating_video,
                            project_name,
                            ):
         '''Gửi prompt để tạo các video'''
-
-        await self.send_prompt_method(prompts,
-                                      generation_mode,
-                                      ratio,
-                                      quantity,
-                                      duration,
-                                      model,
-                                      project_name, )
+        async for update_prompts in self.send_prompt_method(
+                prompts,
+                generation_mode,
+                ratio,
+                quantity,
+                duration,
+                model,
+                max_creating_video,
+                project_name,
+        ):
+            yield update_prompts
 
     async def extract_chars(self, prompt, model, content):
         '''Trích xuất nhân vật'''

@@ -50,12 +50,12 @@ class VideoSettingComponent(BasePage):
         ratio_locator = self._get_ratio_locator(ratio)
         quantity_locator = self._get_quantity_locator(quantity)
         dur_locator = self._get_duration_locator(duration)
-        self.random_time_click(self.CHOOSE_VIDEO_MODEL, 'Mở list video model')
+        await self.random_time_click(self.CHOOSE_VIDEO_MODEL, 'Mở list video model')
         model_locator = self.list_video_model_component.get_model_locator_by_name(model)
-        self.random_time_click(model_locator, f'Chọn model {model}')
+        await self.random_time_click(model_locator, f'Chọn model {model}')
         # Cho các locator vào danh sách rồi xáo trộn lên rồi click
-        self.click_random_order(generator_mode_locator, ratio_locator, quantity_locator, dur_locator)
-        self.close_component()
+        await self.click_random_order(generator_mode_locator, ratio_locator, quantity_locator, dur_locator)
+        await self.close_component()
 
     def _get_ratio_locator(self, ratio: Ratio):
         '''Lấy nút ratio theo tên truyền vào'''

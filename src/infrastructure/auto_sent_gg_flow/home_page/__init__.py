@@ -17,6 +17,16 @@ class HomePage(BasePage):
         if await self.CREATE_WITH_GG_FLOW.is_visible():
             await self.random_time_click(self.CREATE_WITH_GG_FLOW, msg='Create with Google Flow')
 
+            await self.CREATE_WITH_GG_FLOW.click(
+                no_wait_after=True
+            )
+
+            await self.page.wait_for_url(
+                "**/fx/tools/flow**",
+                wait_until="commit",
+                timeout=30_000,
+            )
+
     async def open_or_create_new_project(self, project_name):
         '''Mở hoặc tạo mới 1 project theo tên'''
         await self.create_with_google_flow()

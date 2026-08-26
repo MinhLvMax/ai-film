@@ -37,3 +37,26 @@ class GoogleFlowSession:
 
         if self.playwright:
             await self.playwright.stop()
+
+    async def clear_cache(self):
+        """Xóa browser cache."""
+
+        if not self.context or not self.page:
+            print("[CACHE] Session chưa được mở")
+            return False
+
+        if self.page.is_closed():
+            print("[CACHE] Page đã đóng")
+            return False
+
+        cdp = await self.context.new_cdp_session(self.page)
+
+        try:
+            await cdp.send("Network.enable")
+            await cdp.send("Network.clearBrowserCache")
+
+            print("[CACHE] Đã xóa browser cache")
+            return True
+
+        finally:
+            await cdp.detach()

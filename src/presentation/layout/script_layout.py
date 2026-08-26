@@ -2,7 +2,6 @@ import streamlit as st
 
 from src.presentation.app_state import AppState
 from src.presentation.components import UIString, get_uploaded_text
-# from src.presentation.actions import analysis_script
 
 
 async def script_layout(state: AppState):
@@ -14,7 +13,7 @@ async def script_layout(state: AppState):
     state.script_content = st.text_area(
         label=UIString.SCRIPT_CONTENT_LABEL,
         placeholder=UIString.SCRIPT_PLACE_HOLDER,
-        value=get_uploaded_text(uploaded_script_file),
+        value=state.script_content or get_uploaded_text(uploaded_script_file),
         height='content'
     )
 

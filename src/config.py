@@ -46,6 +46,7 @@ class Config:
 
     BROWSER_DOWNLOAD_PATH = r"C:\Users\Admin\Downloads"
 
+    STREAMLIT_UI_STATE_FILE = DATA / "streamlit_ui_state.json"
 
 if __name__ == '__main__':
     # from openai import OpenAI

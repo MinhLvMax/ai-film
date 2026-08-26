@@ -33,6 +33,9 @@ class UIString:
     VIDEO_GEN_MODELS = list(VideoModels)
     IMAGE_GEN_MODELS = list(ImageModel)
 
+    MAXIMUM_AT_THE_MOMENT_LABEL = 'Maximum at the moment'
+    MAXIMUM_AT_THE_MOMENT_HELP = 'Số video tối đa được tạo trong mỗi thời thời điểm'
+
     PROJECT_NAME_LABEL = 'PROJECT NAME'
     DEFAULT_PROJECT_NAME = 'Default project name'
     PROJECT_NAME_PLACEHOLDER = 'Nhập tên dự án'
@@ -40,6 +43,7 @@ class UIString:
     VIDEO_GEN_MODEL_LABEL = 'Video generation model'
     RATIO_LABEL = 'Ratio'
     QUANTITY_LABEL = 'Quantity'
+    QUANTITY_HELP = 'Quantity generated per submission'
     DURATION_LABEL = 'Duration'
     VIDEO_GEN_MODE_LABEL = 'Video generation mode'
 
@@ -137,7 +141,7 @@ def create_id(prefix: str = ''):
 
 
 def print_data_table(data: list[dict]):
-    '''Dùng để hiển thị dữ liệu dạng bảng'''
+    '''Dùng để hiển thị dữ liệu dạng bảng, không cần thiết lắm, có thể bỏ'''
     df = pd.json_normalize(data)
     st.dataframe(df)
 

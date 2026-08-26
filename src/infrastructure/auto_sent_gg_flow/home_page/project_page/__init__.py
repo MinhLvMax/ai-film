@@ -46,6 +46,8 @@ class ProjectPage(BasePage):
             "link",
             name=re.compile(r"^play_circle\s+\d+%.*")
         )
+        # Thông báo hành vi bất thường:
+        self.UNUSUAL_ACTIVITY = page.get_by_role("button", name="warning Failed We noticed")
 
         # Thành phần setting
         self.setting_component = SettingComponent(self.page)
@@ -58,7 +60,7 @@ class ProjectPage(BasePage):
     async def set_project_name(self, project_name: str):
         '''Đặt tên project theo tên được truyền vào'''
         await self.random_time_click(self.PROJECT_NAME, 'Đặt tên project')
-        await self.PROJECT_NAME.fill(project_name)
+        await self.PROJECT_NAME.fill(str(project_name))
         await self.random_time_click(self.DONE_PROJECT_NAME, 'Hoàn tất đặt tên')
         return True
 
@@ -78,11 +80,11 @@ class ProjectPage(BasePage):
             print(f'{self.CREATING_IMAGES.count()=}')
             await self.page.wait_for_timeout(poll_interval)
 
-    def wait_until_creating_video_below(self, max_creating: int = 2, poll_interval=5000):
+    async def wait_until_creating_video_below(self, max_creating: int, poll_interval=5000):
         '''Chờ cho số lượng video đang được tạo giảm xuống dưới một ngưỡng nhất định'''
-        while self._creating_video_count() >= max_creating:
-            print(f'{self._creating_video_count()=}')
-            self.page.wait_for_timeout(poll_interval)
+        while await self._creating_video_count() >= max_creating:
+            print(f'{await self._creating_video_count()=}')
+            await self.page.wait_for_timeout(poll_interval)
         return True
 
     async def create_a_video(self,
@@ -91,19 +93,53 @@ class ProjectPage(BasePage):
                              ratio: Ratio,
                              quantity: Quantity,
                              duration: Durations,
-                             model: VideoModels):
+                             model: VideoModels,
+                             max_creating: int):
         '''Tạo độc lập 1 video từ 1 prompt truyền vào'''
+
+        # Dừng để phát triển
+        # await self.page.pause()
+
+        await self.wait_until_creating_video_below(max_creating=max_creating)
         await self.random_time_click(self.SETTING, 'Bật setting')
         await self.setting_component.configure_video(
             generation_mode, ratio, quantity, duration, model
         )
+        # Lấy số lượng video đang được tạo trước khi chờ, phải tính từ trước khi gửi prompt
+        before_count = await self._creating_video_count()
         await self.fill_and_send_prompt(video_prompt)
+
+        return await self._wait_until_video_registered(before_count)
 
     async def _creating_video_count(self) -> int:
         '''Đếm số lượng video đang trong hàng đợi và đang được tạo'''
-        print("QUEUE:", self.QUEUED_VIDEO.all_inner_texts())
-        print("GENERATE:", self.GENERATING_VIDEO.all_inner_texts())
+        print(f"QUEUE: {await self.QUEUED_VIDEO.all_inner_texts()}"[:50])
+        print(f"GENERATE: {await self.GENERATING_VIDEO.all_inner_texts()}"[:50])
         return (
                 await self.QUEUED_VIDEO.count()
                 + await self.GENERATING_VIDEO.count()
         )
+
+    async def _wait_until_video_registered(
+            self,
+            before_count,
+            timeout: int = 30000,
+            poll_interval: int = 1000,
+    ):
+        '''Đợi video vào trong hàng đợi'''
+        elapsed = 0
+        while elapsed < timeout:
+
+            # Kiểm tra lỗi trước
+            if await self.UNUSUAL_ACTIVITY.count() > 0:
+                print("[ERROR] Unusual activity")
+                return False
+
+            # Kiểm tra video đã được hệ thống nhận chưa
+            if await self._creating_video_count() > before_count:
+                print("[OK] Video registered")
+                return True
+
+            await self.page.wait_for_timeout(poll_interval)
+            elapsed += poll_interval
+        raise TimeoutError("Video vừa gửi chưa xuất hiện trong queue/generating")

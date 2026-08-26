@@ -8,7 +8,8 @@ async def characters_layout(state: AppState):
     state.extract_chars_prompt = st.text_area(
         label=UIString.characters_prompt_label,
         placeholder=UIString.characters_prompt_placeholder,
-        key='characters_extract_prompt'
+        key='characters_extract_prompt',
+        value=state.extract_chars_prompt or '',
     )
     select_model(key='characters_model')
     uploaded_char_file = st.file_uploader(

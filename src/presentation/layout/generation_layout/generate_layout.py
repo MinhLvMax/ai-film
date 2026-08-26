@@ -1,29 +1,30 @@
 import streamlit as st
 from src.presentation.components import UIString
 from src.presentation.app_state import AppState
-from src.presentation.actions import send_prompts_video_only
+from src.domain import ImageModel, VideoModels, VideoGenerationMode, Ratio, Durations, Quantity
 
 
 async def generate_layout(state: AppState):
     state.project_name = st.text_input(
         label=UIString.PROJECT_NAME_LABEL,
         placeholder=UIString.PROJECT_NAME_PLACEHOLDER,
-        value=UIString.DEFAULT_PROJECT_NAME
+        value=state.project_name or UIString.DEFAULT_PROJECT_NAME
     )
+
     image_config, video_config = st.columns(
         [1, 1],
         gap="small",
         vertical_alignment="top",
         border=True,
     )
-    auto_send_btn = st.button(
-        UIString.SEND_ALL,
-        use_container_width=True,
-        key="prompts_generate_all",
-        disabled=not state.prompts,
+
+    state.max_creating_video = st.number_input(
+        label=UIString.MAXIMUM_AT_THE_MOMENT_LABEL,
+        min_value=1,
+        max_value=5,
+        step=1,
+        value=state.max_creating_video or 1
     )
-    if auto_send_btn:
-        await send_prompts_video_only(state)
 
     with image_config:
         state.image_gen_model = st.selectbox(
@@ -43,6 +44,7 @@ async def generate_layout(state: AppState):
             options=UIString.QUANTITYS,
             key="image_quantity",
             format_func=lambda x: str(x.value),
+            help=UIString.QUANTITY_HELP,
         )
 
         with video_config:
@@ -63,7 +65,9 @@ async def generate_layout(state: AppState):
                 UIString.QUANTITY_LABEL,
                 options=UIString.QUANTITYS,
                 key="video_quantity",
-                format_func=lambda x: str(x.value) )
+                format_func=lambda x: str(x.value),
+                help=UIString.QUANTITY_HELP,
+            )
             state.video_duration = st.selectbox(
                 UIString.DURATION_LABEL,
                 options=UIString.DURATIONS,

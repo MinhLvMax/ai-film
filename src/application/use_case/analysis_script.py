@@ -33,7 +33,7 @@ class AnalysisScript:
         sections = self._sreenplay_chunking(content)
         results = []
         for section in sections:
-            shots_for_section = await self.extract_shots_for_section(
+            shots_for_section = await self._extract_shots_for_section(
                 prompt=prompt,
                 model=model,
                 section=section['content'],
@@ -43,7 +43,7 @@ class AnalysisScript:
             results.extend(shots_for_section)
             yield shots_for_section
 
-    async def extract_shots_for_section(self, prompt, model, section, title, chars):
+    async def _extract_shots_for_section(self, prompt, model, section, title, chars):
         chars_ids = [char["id"] for char in chars]
         prompt = (
             f"{prompt}\n\n"
@@ -59,13 +59,6 @@ class AnalysisScript:
         shots = [
             Shot(
                 shot_id=str(uuid.uuid4()),
-                # subjects=[
-                #     next(
-                #         (char for char in chars if char["id"] == subject_id),
-                #         None
-                #     )
-                #     for subject_id in shot.subject_ids
-                # ],
                 section=title,
                 **shot.model_dump(),
             ).model_dump()

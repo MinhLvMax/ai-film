@@ -1,19 +1,34 @@
 import streamlit as st
 from src.presentation.app_state import AppState
-from src.presentation.components import UIString, print_data_table
 from src.bootstrap import uicapabilities
 
 
-async def send_prompts_video_only(state: AppState):
-    await uicapabilities.send_prompts(
-        state.prompts,
-        state.video_gen_mode,
-        state.video_ratio,
-        state.video_quality,
-        state.video_duration,
-        state.video_gen_model,
-        state.project_name
-    )
+async def send_prompts_video_only(state: AppState, table):
+    '''Lặp lấy kết quả mỗi lần trả ra của hàm gửi ở dưới'''
+    status = st.empty()
+
+    async for prompts in uicapabilities.send_prompts(
+            state.prompts,
+            state.video_gen_mode,
+            state.video_ratio,
+            state.video_quality,
+            state.video_duration,
+            state.video_gen_model,
+            state.max_creating_video,
+            state.project_name,
+    ):
+        state.prompts = prompts
+
+        sent_count = sum(
+            1 for prompt in prompts
+            if prompt.get("is_sent", False)
+        )
+
+        status.write(
+            f"Đã gửi {sent_count}/{len(prompts)} prompts"
+        )
+        table.dataframe(prompts)
+        state.save()
 
 
 async def create_prompt(state: AppState):
@@ -23,6 +38,7 @@ async def create_prompt(state: AppState):
         state.shots,
     )
     state.prompts = prompts
+    state.save()
 
 
 async def characters_analyze(state: AppState):
@@ -37,6 +53,7 @@ async def characters_analyze(state: AppState):
     )
 
     state.characters = chars_extracted
+    state.save()
     return chars_extracted
 
 
@@ -51,6 +68,7 @@ async def shots_analyze(state: AppState):
     ):
         state.shots.extend(shots)
         st.rerun()
+    state.save()
 
 
 async def sign_in():
