@@ -1,9 +1,11 @@
 import streamlit as st
+from streamlit.delta_generator import DeltaGenerator
+import pandas as pd
 from src.presentation.app_state import AppState
 from src.bootstrap import uicapabilities
 
 
-async def send_prompts_video_only(state: AppState, table):
+async def send_prompts_video_only(state: AppState, table: DeltaGenerator):
     '''Lặp lấy kết quả mỗi lần trả ra của hàm gửi ở dưới'''
     status = st.empty()
 
@@ -27,7 +29,7 @@ async def send_prompts_video_only(state: AppState, table):
         status.write(
             f"Đã gửi {sent_count}/{len(prompts)} prompts"
         )
-        table.dataframe(prompts)
+        table.dataframe(pd.json_normalize(state.prompts))
         state.save()
 
 
@@ -41,7 +43,7 @@ async def create_prompt(state: AppState):
     state.save()
 
 
-async def characters_analyze(state: AppState):
+async def characters_analyze(state: AppState, table):
     prompt = state.extract_chars_prompt
     model = state.extract_chars_model
     content = state.script_content
@@ -51,13 +53,13 @@ async def characters_analyze(state: AppState):
         content=content,
         model=model,
     )
-
     state.characters = chars_extracted
+    table.dataframe(state.characters)
     state.save()
     return chars_extracted
 
 
-async def shots_analyze(state: AppState):
+async def shots_analyze(state: AppState, table):
     if state.shots is None:
         state.shots = []
     async for shots in uicapabilities.extract_shots(
@@ -67,9 +69,13 @@ async def shots_analyze(state: AppState):
             chars=state.characters,
     ):
         state.shots.extend(shots)
-        st.rerun()
-    state.save()
+        table.dataframe(pd.json_normalize(state.shots))
+        state.save()
 
 
 async def sign_in():
     await uicapabilities.sign_in_google()
+
+
+async def export_state(state: AppState):
+    state.export()

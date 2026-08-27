@@ -1,11 +1,11 @@
 import streamlit as st
+import pandas as pd
 from src.presentation.components import UIString, read_uploaded_file, select_model, print_data_table
 from src.presentation.actions import shots_analyze
 from src.presentation.app_state import AppState
 
 
 async def shots_layout(state: AppState):
-
     state.extract_shots_prompt = st.text_area(
         label=UIString.shots_prompt_label,
         placeholder=UIString.shots_prompt_placeholder,
@@ -24,11 +24,12 @@ async def shots_layout(state: AppState):
         key="shots_analyze",
         disabled=not state.script_content or not state.characters or uploaded_shots_file is not None,
     )
-
+    table = st.empty()
     if extract_shots_btn:
         with st.spinner(UIString.ANALYZING):
-            await shots_analyze(state=state)
+            await shots_analyze(state, table)
     if uploaded_shots_file is not None:
         state.shots = read_uploaded_file(uploaded_shots_file)
+        state.save()
     if state.shots:
-        print_data_table(state.shots)
+        table.dataframe(pd.json_normalize(state.shots))

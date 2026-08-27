@@ -1,7 +1,10 @@
 import json
+from pathlib import Path
+import pandas as pd
 import streamlit as st
 from typing import Self
 from src.config import Config
+from src.presentation.components import create_id
 
 
 class AppState:
@@ -45,6 +48,106 @@ class AppState:
                 ensure_ascii=False,
                 indent=2,
             )
+
+    def export(self):
+        """Export các dữ liệu của AppState ra folder state."""
+        downloads = Path.home() / "Downloads"
+        export_dir = downloads / create_id(self.project_name or 'state')
+
+        export_dir.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+
+        # =========================
+        # TXT
+        # =========================
+
+        self._write_txt(
+            export_dir / "extract_chars_prompt.txt",
+            self.extract_chars_prompt,
+        )
+
+        self._write_txt(
+            export_dir / "extract_shots_prompt.txt",
+            self.extract_shots_prompt,
+        )
+
+        self._write_txt(
+            export_dir / "style_lock.txt",
+            self.style_lock,
+        )
+
+        self._write_txt(
+            export_dir / 'script_content.txt',
+            self.script_content,
+        )
+
+        # =========================
+        # CSV
+        # =========================
+
+        self._write_csv(
+            export_dir / "characters.csv",
+            self.characters,
+        )
+
+        self._write_csv(
+            export_dir / "shots.csv",
+            self.shots,
+        )
+
+        self._write_csv(
+            export_dir / "prompts.csv",
+            self.prompts,
+        )
+
+        print(
+            f"[STATE] Exported to: "
+            f"{export_dir.resolve()}"
+        )
+        st.toast("Export thành công")
+
+    @staticmethod
+    def _write_txt(
+            path: Path,
+            content: str | None,
+    ):
+        if content is None:
+            return
+
+        path.write_text(
+            content,
+            encoding="utf-8",
+        )
+
+    @staticmethod
+    def _write_csv(
+            path: Path,
+            data: list[dict] | None,
+    ):
+        if not data:
+            return
+
+        df = pd.json_normalize(data)
+
+        # Chuyển list/dict còn sót lại thành JSON string
+        # để CSV đọc đẹp hơn.
+        for column in df.columns:
+            df[column] = df[column].apply(
+                lambda value: json.dumps(
+                    value,
+                    ensure_ascii=False,
+                )
+                if isinstance(value, (list, dict))
+                else value
+            )
+
+        df.to_csv(
+            path,
+            index=False,
+            encoding="utf-8-sig",
+        )
 
     @classmethod
     def get_state(cls) -> Self:

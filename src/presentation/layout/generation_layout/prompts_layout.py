@@ -28,7 +28,7 @@ async def prompts_layout(state: AppState):
         type=["xlsx", 'csv']
     )
 
-    if not state.prompts and uploaded_prompt_file is not None:
+    if uploaded_prompt_file is not None:
         state.prompts = read_uploaded_file(uploaded_prompt_file)
 
     auto_send_btn = st.button(
@@ -37,11 +37,12 @@ async def prompts_layout(state: AppState):
         key="prompts_generate_all",
         disabled=not state.prompts,
     )
+
     table = st.empty()
     if auto_send_btn:
         await send_prompts_video_only(state, table)
 
-    table.dataframe(pd.json_normalize(state.prompts))
+    table.data_editor(pd.json_normalize(state.prompts))
 
     # if state.prompts:
     #     print_data_table(state.prompts)
