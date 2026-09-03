@@ -37,6 +37,18 @@ class UICapabilities:
         ):
             yield update_prompts
 
+    async def send_prompt_sequentiallys(self,
+                                        prompts: list[dict],
+                                        project_url: str,
+                                        sleep_time: int,
+                                        ):
+        async for update_prompts in self.send_prompt_method(
+                prompts,
+                project_url,
+                sleep_time,
+        ):
+            yield update_prompts
+
     async def extract_chars(self, prompt, model, content):
         '''Trích xuất nhân vật'''
         return await self.analysis_script.extract_chars(
@@ -61,3 +73,6 @@ class UICapabilities:
     async def sign_in_google(self):
         '''Đăng nhập nick mà đăng kí tài khoản google flow'''
         await login_profile()
+
+    async def download_last_element(self):
+        '''Tải xuống 1 phần tử gần nhất, hiện tại làm là 720mb cho nhanh vì 1k 4k rất lâu'''

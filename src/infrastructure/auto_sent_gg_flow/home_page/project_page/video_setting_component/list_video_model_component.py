@@ -6,11 +6,11 @@ from src.domain import VideoModels
 class ListVideoModelComponent(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
-        self.OMNI = page.get_by_role("button", name="volume_up Omni Flash")
-        self.VEO_31_LITE = page.get_by_role("button", name="volume_up Veo 3.1 - Lite", exact=True)
-        self.VEO_31_FAST = page.get_by_role("button", name="volume_up Veo 3.1 - Fast")
-        self.VEO_31_QUALITY = page.get_by_role("button", name="volume_up Veo 3.1 - Quality")
-        self.VEO_31_LITE_LOWER_PRIORITY = page.get_by_role("button", name="volume_up Veo 3.1 - Lite [")
+        self.OMNI = page.get_by_role("menuitem", name="Omni 1.1 Flash")
+        self.VEO_31_LITE = page.get_by_role("menuitem", name="Veo 3.1 - Lite", exact=True)
+        self.VEO_31_FAST = page.get_by_role("menuitem", name="Veo 3.1 - Fast")
+        self.VEO_31_QUALITY = page.get_by_role("menuitem", name="Veo 3.1 - Quality")
+        self.VEO_31_LITE_LOWER_PRIORITY = page.get_by_role("menuitem", name="Veo 3.1 - Lite [Lower")
 
     def get_model_locator_by_name(
             self,

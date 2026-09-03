@@ -26,6 +26,9 @@ from src.domain import ImageModel, VideoModels, Ratio, Quantity, VideoGeneration
 # :material/send:
 
 class UIString:
+
+    IS_DOWNLOAD_LABEL = 'Tải xuống'
+
     DURATIONS = list(Durations)
     QUANTITYS = list(Quantity)
     RATIOS = list(Ratio)
@@ -37,6 +40,9 @@ class UIString:
     MAXIMUM_AT_THE_MOMENT_HELP = 'Số video tối đa được tạo trong mỗi thời thời điểm'
 
     PROJECT_NAME_LABEL = 'PROJECT NAME'
+    PROJECT_URL_LABEL = 'URL của dự án'
+    PROJECT_URL_PLACEHOLDER = 'https://......'
+
     DEFAULT_PROJECT_NAME = 'Default project name'
     PROJECT_NAME_PLACEHOLDER = 'Nhập tên dự án'
     IMAGE_GEN_MODEL_LABEL = 'Image generation model'

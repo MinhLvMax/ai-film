@@ -10,30 +10,27 @@ class VideoSettingComponent(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
         # Generation mode
-        self.FRAME_MODE = page.get_by_role("tab", name="crop_free Frames")
-        self.INGREDIENS_MODE = page.get_by_role("tab", name="chrome_extension Ingredients")
+        self.FRAME_MODE = page.get_by_role("radio", name="Frames")
+        self.INGREDIENS_MODE = page.get_by_role("radio", name="Ingredients")
 
         # Ratios
         self.RATIO_9_16 = page.get_by_role("tab", name="crop_9_16 9:")
-        self.RATIO_16_9 = page.get_by_role("tab", name="crop_16_9 16:")
+        self.RATIO_16_9 = page.get_by_role("radio", name=":9")
 
         # Các nút chọn số lượng
-        self.QUANTIRY_X1 = self.page.get_by_role("tab", name="x1")
-        self.QUANTIRY_X2 = self.page.get_by_role("tab", name="x2")
-        self.QUANTITY_X3 = self.page.get_by_role("tab", name="x3")
-        self.QUANTIRY_X4 = self.page.get_by_role("tab", name="x4")
+        self.QUANTIRY_X1 = self.page.get_by_role("radio", name="x1")
+        self.QUANTIRY_X2 = self.page.get_by_role("radio", name="x2")
+        self.QUANTITY_X3 = self.page.get_by_role("radio", name="x3")
+        self.QUANTIRY_X4 = self.page.get_by_role("radio", name="x4")
 
         # Nút chọn model
-        self.CHOOSE_VIDEO_MODEL = self.page.get_by_role(
-            "button",
-            name=re.compile(r"arrow_drop_down$")
-        )
+        self.CHOOSE_VIDEO_MODEL = self.page.get_by_role("button", name="Select model family")
 
         # Các nút chọn thời lượng
-        self.DUR_4S = self.page.get_by_role("tab", name="4s")
-        self.DUR_6S = self.page.get_by_role("tab", name="6s")
-        self.DUR_8S = self.page.get_by_role("tab", name="8s")
-        self.DUR_10S = self.page.get_by_role("tab", name="10s")
+        self.DUR_4S = self.page.get_by_role("radio", name="4s")
+        self.DUR_6S = self.page.get_by_role("radio", name="6s")
+        self.DUR_8S = self.page.get_by_role("radio", name="8s")
+        self.DUR_10S = self.page.get_by_role("radio", name="10s")
 
         self.list_video_model_component = ListVideoModelComponent(self.page)
 

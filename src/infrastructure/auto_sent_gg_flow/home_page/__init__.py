@@ -10,7 +10,7 @@ class HomePage(BasePage):
         self.page = page
         self.URL = 'https://labs.google/fx/tools/flow'
         self.CREATE_WITH_GG_FLOW = page.get_by_role("button", name="Create with Google Flow")
-        self.NEW_PROJECT = page.get_by_role("button", name="add_2 New project")
+        self.NEW_PROJECT = page.get_by_role("button", name="New project")
 
     async def create_with_google_flow(self):
         '''Nếu có thì ấn nút trắng create with google flow, không có thì thôi'''
@@ -30,7 +30,7 @@ class HomePage(BasePage):
     async def open_or_create_new_project(self, project_name):
         '''Mở hoặc tạo mới 1 project theo tên'''
         await self.create_with_google_flow()
-        # self.page.pause()
+
         if await self._is_exist_project(project_name):
             return await self._open_exist_project_page(project_name)
         else:
@@ -38,9 +38,14 @@ class HomePage(BasePage):
 
     async def _open_exist_project_page(self, project_name):
         '''Mở 1 project đã có sẵn'''
-        span = self.page.get_by_text(f"{project_name}editEdit project")
-        a = span.locator("xpath=ancestor::div[2]/a")
-        await self.random_time_click(a, msg='Đi vào project')
+        # span = self.page.get_by_text(f"{project_name} edit")
+        # a = span.locator("xpath=ancestor::div[2]/a")
+
+        # Lấy locator của project
+        project_locator = self.page.locator("flow-project-card").filter(has_text="Sark Island editdelete").get_by_label(
+            "Open project")
+
+        await self.random_time_click(project_locator, msg='Đi vào project')
         await self.wait_util_loaded()
         return ProjectPage(self.page)
 
@@ -54,8 +59,10 @@ class HomePage(BasePage):
 
     async def _is_exist_project(self, project_name):
         '''Tìm và trả về locator của project đã tồn tại trước đó với project_name, thêm độ trễ nghỉ để locator kịp load ra'''
+        # print('Dừng để kiểm tra logic tìm project đã tồn tại')
+        # await self.page.pause()
         locator = self.page.get_by_text(
-            f"{project_name}editEdit project"
+            f"{project_name} edit"
         )
         try:
             await locator.wait_for(

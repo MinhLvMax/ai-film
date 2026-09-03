@@ -11,10 +11,10 @@ class SettingComponent(BasePage):
         super().__init__(page)
 
         # Nút tab ảnh
-        self.IMAGE_TAB = page.get_by_role("tab", name="image Image")
+        self.IMAGE_TAB = page.get_by_role("radio", name="Image")
 
         # Nút tab video
-        self.VIDEO_TAB = page.get_by_role("tab", name="videocam Video")
+        self.VIDEO_TAB = page.get_by_role("radio", name="Video")
 
         # Thành phần bên trong
         self._image_setting_component = ImageSettingComponent(self.page)

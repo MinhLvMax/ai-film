@@ -33,6 +33,28 @@ async def send_prompts_video_only(state: AppState, table: DeltaGenerator):
         state.save()
 
 
+async def send_prompt_sequentiallys(state: AppState, table: DeltaGenerator):
+    status = st.empty()
+
+    async for prompts in uicapabilities.send_prompt_sequentiallys(
+            state.prompts,
+            state.project_url,
+            state.sleeptime
+    ):
+        state.prompts = prompts
+
+        sent_count = sum(
+            1 for prompt in prompts
+            if prompt.get("is_sent", False)
+        )
+
+        status.write(
+            f"Đã gửi {sent_count}/{len(prompts)} prompts"
+        )
+        table.dataframe(pd.json_normalize(state.prompts))
+        state.save()
+
+
 async def create_prompt(state: AppState):
     prompts = await uicapabilities.build_prompt(
         state.style_lock,
@@ -60,17 +82,17 @@ async def characters_analyze(state: AppState, table):
 
 
 async def shots_analyze(state: AppState, table):
-    if state.shots is None:
-        state.shots = []
+    new_shots = []
     async for shots in uicapabilities.extract_shots(
             prompt=state.extract_shots_prompt,
             model=state.extract_shots_model,
             content=state.script_content,
             chars=state.characters,
     ):
-        state.shots.extend(shots)
-        table.dataframe(pd.json_normalize(state.shots))
-        state.save()
+        new_shots.extend(shots)
+        table.dataframe(pd.json_normalize(new_shots))
+    state.shots = new_shots
+    state.save()
 
 
 async def sign_in():

@@ -25,6 +25,7 @@ class AppState:
         self.prompts: list[dict] | None = None
 
         self.project_name: str | None = None
+        self.project_url: str | None = None
 
         self.image_ratio: str | None = None
         self.image_gen_model: str | None = None
@@ -36,6 +37,8 @@ class AppState:
         self.video_duration: int | None = None
         self.video_quality: int | None = None
         self.max_creating_video: int | float | None = None
+        self.is_downloaded: bool = False
+        self.sleeptime = 30
 
     def save(self):
         """Lưu trạng thái ứng dụng xuống file."""
