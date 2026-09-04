@@ -24,20 +24,21 @@ class AppState:
         self.style_lock = None
         self.prompts: list[dict] | None = None
 
-        self.project_name: str | None = None
+        # self.project_name: str | None = None
         self.project_url: str | None = None
 
-        self.image_ratio: str | None = None
-        self.image_gen_model: str | None = None
-        self.image_quality: int | None = None
+        # self.image_ratio: str | None = None
+        # self.image_gen_model: str | None = None
+        # self.image_quality: int | None = None
+        #
+        # self.video_gen_mode: str | None = None
+        # self.video_ratio: str | None = None
+        # self.video_gen_model: str | None = None
+        # self.video_duration: int | None = None
+        # self.video_quality: int | None = None
+        # self.max_creating_video: int | float | None = None
+        # self.is_downloaded: bool = False
 
-        self.video_gen_mode: str | None = None
-        self.video_ratio: str | None = None
-        self.video_gen_model: str | None = None
-        self.video_duration: int | None = None
-        self.video_quality: int | None = None
-        self.max_creating_video: int | float | None = None
-        self.is_downloaded: bool = False
         self.sleeptime = 30
 
     def save(self):
@@ -55,7 +56,9 @@ class AppState:
     def export(self):
         """Export các dữ liệu của AppState ra folder state."""
         downloads = Path.home() / "Downloads"
-        export_dir = downloads / create_id(self.project_name or 'state')
+        export_dir = downloads / create_id(
+            prefix='state'
+        )
 
         export_dir.mkdir(
             parents=True,

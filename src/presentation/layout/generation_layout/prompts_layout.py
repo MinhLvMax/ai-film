@@ -3,7 +3,7 @@ import pandas as pd
 from src.presentation.app_state import AppState
 from src.presentation.components import UIString, read_uploaded_file, print_data_table
 from src.presentation.actions import create_prompt
-from src.presentation.actions import send_prompts_video_only, send_prompt_sequentiallys
+from src.presentation.actions import send_prompt_sequentiallys
 
 
 async def prompts_layout(state: AppState):

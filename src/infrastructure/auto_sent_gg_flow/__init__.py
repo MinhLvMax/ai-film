@@ -66,9 +66,6 @@ async def send_prompt_sequentiallys(
     )
     project_page = ProjectPage(session.page)
 
-    # Debug
-    await session.page.pause()
-
     # Tắt chế độ tác nhân
     await project_page.turn_off_agent_mode()
 
@@ -92,6 +89,13 @@ async def send_prompt_sequentiallys(
             if is_exist_notification:
                 print('Có cảnh báo, dừng quá trình')
                 prompt["is_sent"] = False
+
+                await session.clear_cache()
+                await session.close_session()
+                # Debug
+                # print('Dừng để debug')
+                # await session.page.pause()
+
                 break
 
             # Gán trạng thái đã gửi

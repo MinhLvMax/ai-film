@@ -48,6 +48,7 @@ class Config:
 
     STREAMLIT_UI_STATE_FILE = DATA / "streamlit_ui_state.json"
 
+    SQLITE_DB_PATH = PROJECT_PATH / 'ai_film_sqlite.db'
 
 
 if __name__ == '__main__':

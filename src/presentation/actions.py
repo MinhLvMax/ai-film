@@ -5,32 +5,32 @@ from src.presentation.app_state import AppState
 from src.bootstrap import uicapabilities
 
 
-async def send_prompts_video_only(state: AppState, table: DeltaGenerator):
-    '''Lặp lấy kết quả mỗi lần trả ra của hàm gửi ở dưới'''
-    status = st.empty()
-
-    async for prompts in uicapabilities.send_prompts(
-            state.prompts,
-            state.video_gen_mode,
-            state.video_ratio,
-            state.video_quality,
-            state.video_duration,
-            state.video_gen_model,
-            state.max_creating_video,
-            state.project_name,
-    ):
-        state.prompts = prompts
-
-        sent_count = sum(
-            1 for prompt in prompts
-            if prompt.get("is_sent", False)
-        )
-
-        status.write(
-            f"Đã gửi {sent_count}/{len(prompts)} prompts"
-        )
-        table.dataframe(pd.json_normalize(state.prompts))
-        state.save()
+# async def send_prompts_video_only(state: AppState, table: DeltaGenerator):
+#     '''Lặp lấy kết quả mỗi lần trả ra của hàm gửi ở dưới'''
+#     status = st.empty()
+#
+#     async for prompts in uicapabilities.send_prompts(
+#             state.prompts,
+#             state.video_gen_mode,
+#             state.video_ratio,
+#             state.video_quality,
+#             state.video_duration,
+#             state.video_gen_model,
+#             state.max_creating_video,
+#             state.project_name,
+#     ):
+#         state.prompts = prompts
+#
+#         sent_count = sum(
+#             1 for prompt in prompts
+#             if prompt.get("is_sent", False)
+#         )
+#
+#         status.write(
+#             f"Đã gửi {sent_count}/{len(prompts)} prompts"
+#         )
+#         table.dataframe(pd.json_normalize(state.prompts))
+#         state.save()
 
 
 async def send_prompt_sequentiallys(state: AppState, table: DeltaGenerator):
