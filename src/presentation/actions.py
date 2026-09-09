@@ -39,7 +39,8 @@ async def send_prompt_sequentiallys(state: AppState, table: DeltaGenerator):
     async for prompts in uicapabilities.send_prompt_sequentiallys(
             state.prompts,
             state.project_url,
-            state.sleeptime
+            state.sleeptime,
+            state.browser_name,
     ):
         state.prompts = prompts
 
@@ -81,17 +82,29 @@ async def characters_analyze(state: AppState, table):
     return chars_extracted
 
 
+# async def shots_analyze(state: AppState, table):
+#     new_shots = []
+#     async for shots in uicapabilities.extract_shots(
+#             prompt=state.extract_shots_prompt,
+#             model=state.extract_shots_model,
+#             content=state.script_content,
+#             chars=state.characters,
+#     ):
+#         new_shots.extend(shots)
+#         table.dataframe(pd.json_normalize(new_shots))
+#     state.shots = new_shots
+#     state.save()
+
+
 async def shots_analyze(state: AppState, table):
-    new_shots = []
-    async for shots in uicapabilities.extract_shots(
-            prompt=state.extract_shots_prompt,
-            model=state.extract_shots_model,
-            content=state.script_content,
-            chars=state.characters,
-    ):
-        new_shots.extend(shots)
-        table.dataframe(pd.json_normalize(new_shots))
-    state.shots = new_shots
+    shots = await uicapabilities.extract_shots(
+        prompt=state.extract_shots_prompt,
+        model=state.extract_shots_model,
+        content=state.script_content,
+        chars=state.characters,
+    )
+    table.dataframe(pd.json_normalize(shots))
+    state.shots = shots
     state.save()
 
 

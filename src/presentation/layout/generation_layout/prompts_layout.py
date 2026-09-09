@@ -31,6 +31,20 @@ async def prompts_layout(state: AppState):
     if uploaded_prompt_file is not None:
         state.prompts = read_uploaded_file(uploaded_prompt_file)
 
+    table = st.empty()
+
+    edited_df = table.data_editor(
+        pd.json_normalize(state.prompts),
+        key="prompts_editor",
+        width='stretch',
+    )
+
+    # Update ngược lại vào state
+    new_prompts = edited_df.to_dict("records")
+    if new_prompts != state.prompts:  # Nếu dữ liệu khác trước đó thì lưu
+        state.prompts = new_prompts
+        state.save()
+
     auto_send_btn = st.button(
         UIString.SEND_ALL,
         use_container_width=True,
@@ -38,12 +52,9 @@ async def prompts_layout(state: AppState):
         disabled=not state.prompts,
     )
 
-    table = st.empty()
     if auto_send_btn:
         # await send_prompts_video_only(state, table)
         await send_prompt_sequentiallys(state, table)
-
-    table.data_editor(pd.json_normalize(state.prompts))
 
     # if state.prompts:
     #     print_data_table(state.prompts)

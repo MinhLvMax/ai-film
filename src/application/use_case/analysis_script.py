@@ -30,6 +30,27 @@ class AnalysisScript:
         return subjects
 
     async def extract_shots(self, prompt, model, content, chars):
+        '''Gửi thẳng full content để trích xuất cả dàn prompt'''
+        chars_ids = [char["id"] for char in chars]
+        prompt = (
+            f"{prompt}\n\n"
+            "<content>\n"
+            f"{content}\n"
+            "</content>\n\n"
+            "<character_ids>\n"
+            f"{', '.join(chars_ids)}\n"
+            "</character_ids>"
+        )
+        complete_result = await self.llm.complete(messages=prompt, response_model=ListShotLLMResult, llm_model=model)
+        list_shots_llm_res: ListShotLLMResult = complete_result.response_model
+        shots = [
+            shot.model_dump()
+            for shot in list_shots_llm_res.shots
+        ]
+        return shots
+
+    async def extract_shots_with_chunking(self, prompt, model, content, chars):
+        '''Trích xuất cả bài bằng cách chia nhỏ content thành các phân đoạn'''
         sections = self._sreenplay_chunking(content)
         results = []
         for section in sections:
@@ -44,6 +65,7 @@ class AnalysisScript:
             yield shots_for_section
 
     async def _extract_shots_for_section(self, prompt, model, section, title, chars):
+        '''Trích xuất shot cho 1 phân đoạn'''
         chars_ids = [char["id"] for char in chars]
         prompt = (
             f"{prompt}\n\n"
@@ -111,3 +133,6 @@ class AnalysisScript:
         text = text.lower()
 
         return re.sub(r"\s+", "_", text).strip("_")
+
+if __name__ == '__main__':
+    '''Test'''

@@ -40,6 +40,7 @@ class AppState:
         # self.is_downloaded: bool = False
 
         self.sleeptime = 30
+        self.browser_name = 'msedge'
 
     def save(self):
         """Lưu trạng thái ứng dụng xuống file."""

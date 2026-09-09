@@ -27,7 +27,9 @@ class Config:
 
     load_dotenv()  # Load các biến môi trường ở file .env
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")  # Load GROQ_API_KEY từ biến môi trường
+
     OPEN_API_KEY = os.getenv("OPEN_API_KEY")
+    os.environ["OPENAI_LOG"] = "info"
 
     PROMPTS = DATA / "prompts"
     PROMPTS.mkdir(exist_ok=True)

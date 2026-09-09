@@ -7,6 +7,7 @@ class UICapabilities:
         self.analysis_script = analysis_script
         self.build_prompt_method = build_prompt_method
         self.send_prompt_method = send_prompt_method
+        # self.login_profile = login_profile
 
     def analyze_script(self, content, extract_char_prompt, extract_shot_prompt):
         # chars = self.analysis_script.extract_chars(extract_char_prompt, content)
@@ -70,9 +71,9 @@ class UICapabilities:
         '''Xây dựng prompt từ cảnh'''
         return self.build_prompt_method(style_lock, chars, shots)
 
-    async def sign_in_google(self):
+    async def sign_in_google(self, browser_name=None):
         '''Đăng nhập nick mà đăng kí tài khoản google flow'''
-        await login_profile()
+        await login_profile(browser_name)
 
     async def download_last_element(self):
         '''Tải xuống 1 phần tử gần nhất, hiện tại làm là 720mb cho nhanh vì 1k 4k rất lâu'''

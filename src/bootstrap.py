@@ -12,7 +12,8 @@ def build_ui_capabilities():
     return UICapabilities(
         analysis_script=analysis_script,
         build_prompt_method=build_prompt_from_chars_and_shots,
-        send_prompt_method=send_prompt_sequentiallys)
+        send_prompt_method=send_prompt_sequentiallys,
+    )
 
 
 uicapabilities = build_ui_capabilities()
