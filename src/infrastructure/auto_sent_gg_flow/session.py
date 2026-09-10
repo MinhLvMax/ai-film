@@ -3,23 +3,7 @@ from typing import Literal
 from playwright.async_api import async_playwright, Page
 from src.config import Config
 from src.infrastructure.auto_sent_gg_flow.home_page import HomePage
-
-BrowserName = Literal[
-    "chrome",
-    "chrome-beta",
-    "chrome-dev",
-    "chrome-canary",
-
-    "msedge",
-    "msedge-beta",
-    "msedge-dev",
-    "msedge-canary",
-
-    "coc_coc",
-    "opera",
-
-    "firefox",
-]
+from src.domain import BrowserName
 
 
 class GoogleFlowSession:
@@ -118,4 +102,3 @@ class GoogleFlowSession:
 
         DELETE_DATA = self.page.get_by_role("button", name="Delete data")
         await DELETE_DATA.click()
-

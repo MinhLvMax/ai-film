@@ -108,8 +108,8 @@ async def shots_analyze(state: AppState, table):
     state.save()
 
 
-async def sign_in():
-    await uicapabilities.sign_in_google()
+async def sign_in(browser_name):
+    await uicapabilities.sign_in_google(browser_name)
 
 
 async def export_state(state: AppState):

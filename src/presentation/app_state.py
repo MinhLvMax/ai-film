@@ -15,10 +15,12 @@ class AppState:
 
         self.extract_chars_prompt = None
         self.extract_chars_model = None
+        self.extract_chars_model_index: int | None = None
         self.characters: list[dict] | None = None
 
         self.extract_shots_prompt = None
         self.extract_shots_model = None
+        self.extract_shots_model_index: int | None = None
         self.shots: list[dict] | None = None
 
         self.style_lock = None
@@ -30,7 +32,7 @@ class AppState:
         # self.image_ratio: str | None = None
         # self.image_gen_model: str | None = None
         # self.image_quality: int | None = None
-        #
+
         # self.video_gen_mode: str | None = None
         # self.video_ratio: str | None = None
         # self.video_gen_model: str | None = None
@@ -40,7 +42,8 @@ class AppState:
         # self.is_downloaded: bool = False
 
         self.sleeptime = 30
-        self.browser_name = 'msedge'
+        # self.browser_name = 'msedge'
+        self.browser_name = 'chrome'
 
     def save(self):
         """Lưu trạng thái ứng dụng xuống file."""

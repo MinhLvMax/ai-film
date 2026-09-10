@@ -12,7 +12,7 @@ async def characters_layout(state: AppState):
         key='characters_extract_prompt',
         value=state.extract_chars_prompt or '',
     )
-    select_model(key='characters_model')
+    state.extract_chars_model = select_model(key='characters_model', selected_model=state.extract_chars_model)
     uploaded_char_file = st.file_uploader(
         label=UIString.UPLOAD_CHAR_LABEL,
         type=["xlsx", 'csv']

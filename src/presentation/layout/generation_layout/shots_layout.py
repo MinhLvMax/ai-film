@@ -12,7 +12,7 @@ async def shots_layout(state: AppState):
         value=state.extract_shots_prompt or ''
     )
 
-    state.extract_shots_model = select_model(key='shots_model')
+    state.extract_shots_model = select_model(key='shots_model', selected_model=state.extract_shots_model)
     uploaded_shots_file = st.file_uploader(
         label=UIString.UPLOAD_SHOT_LABEL,
         type=["xlsx", 'csv']

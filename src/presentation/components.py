@@ -152,13 +152,19 @@ def print_data_table(data: list[dict]):
     st.dataframe(df)
 
 
-def select_model(key: str, list_model: list[str] | None = None):
+def select_model(key: str, selected_model,list_model: list[str] | None = None):
     if list_model is None:
         list_model = UIString.LIST_MODEL
-    st.selectbox(
+    index = 0
+
+    if selected_model in list_model:
+        index = list_model.index(selected_model)
+
+    return st.selectbox(
         label=UIString.SELECT_MODEL_LABEL,
         options=list_model,
-        key=key
+        index=index,
+        key=key,
     )
 
 

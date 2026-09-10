@@ -1,7 +1,9 @@
+from typing import get_args
 import streamlit as st
 from src.presentation.components import UIString
 from src.presentation.app_state import AppState
 from src.domain import ImageModel, VideoModels, VideoGenerationMode, Ratio, Durations, Quantity
+from src.domain import BrowserName
 
 
 async def generate_layout(state: AppState):
@@ -18,7 +20,12 @@ async def generate_layout(state: AppState):
         min_value=0,
         step=1,
     )
-    state.save()
+
+    # Trình duyệt
+    state.browser_name = st.selectbox(
+        'Chọn trình duyệt',
+        options=get_args(BrowserName)
+    )
 
     # state.project_name = st.text_input(
     #     label=UIString.PROJECT_NAME_LABEL,

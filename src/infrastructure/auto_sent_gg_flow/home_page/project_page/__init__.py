@@ -9,6 +9,7 @@ from src.domain import VideoGenerationMode, Ratio, Quantity, Durations, VideoMod
 class ProjectPage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
+
         self.page = page
 
         self.ALL_MEDIA = page.get_by_role("button", name="dashboard All Media")
@@ -30,8 +31,8 @@ class ProjectPage(BasePage):
         self.DONE_PROJECT_NAME = page.get_by_role("button", name="Done")
 
         # Entry nhập prompt
-        self.INPUT_PROMPT = page.get_by_role("paragraph").filter(has_text="What do you want to create?")
-
+        # self.INPUT_PROMPT = page.get_by_role("paragraph").filter(has_text="What do you want to create?")
+        self.INPUT_PROMPT = page.get_by_role("paragraph").filter(has_text=re.compile(r"^$"))
         # Nút cài đặt
         # self.SETTING = page.locator("button").filter(
         #     has_text=re.compile(r"(Nano Banana|Video)")
@@ -82,6 +83,9 @@ class ProjectPage(BasePage):
 
     async def fill_and_send_prompt(self, prompt):
         '''Điền và gửi prompt, seting cần phải được cấu hình trước đó vì hàm này chỉ biết điền và gửi'''
+        # print('Dừng để debug nút chỉnh sửa')
+        # await self.page.pause()
+
         await self.INPUT_PROMPT.fill(prompt)
         await self.random_time_click(self.SEND_PROMPT, 'Gửi prompt')
         return True

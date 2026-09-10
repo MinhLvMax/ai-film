@@ -5,7 +5,6 @@ from src.presentation.components import UIString, read_uploaded_file, print_data
 from src.presentation.actions import create_prompt
 from src.presentation.actions import send_prompt_sequentiallys
 
-
 async def prompts_layout(state: AppState):
     state.style_lock = st.text_area(
         label=UIString.STYLE_LOCK_LABEL,

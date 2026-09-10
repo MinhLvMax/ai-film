@@ -1,5 +1,5 @@
 from enum import StrEnum, IntEnum
-
+from typing import Literal
 
 class ImageModel(StrEnum):
     NANO_BANANA_PRO = "Nano Banana Pro"
@@ -40,3 +40,18 @@ class Durations(StrEnum):
     DURATION_6S = '6s'
     DURATION_8S = '8s'
     DURATION_10S = '10s'
+
+
+BrowserName = Literal[
+    "chrome",
+    "chrome-beta",
+    "chrome-dev",
+    "chrome-canary",
+    "msedge",
+    "msedge-beta",
+    "msedge-dev",
+    "msedge-canary",
+    "coc_coc",
+    "opera",
+    "firefox",
+]

@@ -42,11 +42,13 @@ class UICapabilities:
                                         prompts: list[dict],
                                         project_url: str,
                                         sleep_time: int,
+                                        browser_name: str
                                         ):
         async for update_prompts in self.send_prompt_method(
                 prompts,
                 project_url,
                 sleep_time,
+                browser_name
         ):
             yield update_prompts
 

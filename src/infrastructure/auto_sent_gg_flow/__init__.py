@@ -62,7 +62,7 @@ async def send_prompt_sequentiallys(
 ):
     '''Gửi lần lượt prompt, có thời gian nghỉ'''
     session = await GoogleFlowSession(
-        browser_name=browser_name,  # Cải tiến chọn ở giao diện sau
+        browser_name=browser_name,  # Cải tiến chọn ở giao diện sau -> cải tiến rồi
         # executable_path=r"C:\Program Files\CocCoc\Browser\Application\browser.exe"
     ).start()
     await session.page.goto(
