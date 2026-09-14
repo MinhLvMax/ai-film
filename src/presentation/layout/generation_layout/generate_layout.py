@@ -21,10 +21,13 @@ async def generate_layout(state: AppState):
         step=1,
     )
 
+    browser_options = list(BrowserName)
     # Trình duyệt
     state.browser_name = st.selectbox(
         'Chọn trình duyệt',
-        options=get_args(BrowserName)
+        options=browser_options,
+        index=browser_options.index(state.browser_name),
+        format_func=lambda x: x.value,
     )
 
     # state.project_name = st.text_input(

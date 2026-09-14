@@ -42,16 +42,27 @@ class Durations(StrEnum):
     DURATION_10S = '10s'
 
 
-BrowserName = Literal[
-    "chrome",
-    "chrome-beta",
-    "chrome-dev",
-    "chrome-canary",
-    "msedge",
-    "msedge-beta",
-    "msedge-dev",
-    "msedge-canary",
-    "coc_coc",
-    "opera",
-    "firefox",
-]
+class BrowserName(StrEnum):
+    CHROME = "chrome"
+    CHROME_BETA = "chrome-beta"
+    CHROME_DEV = "chrome-dev"
+    CHROME_CANARY = "chrome-canary"
+
+    MSEDGE = "msedge"
+    MSEDGE_BETA = "msedge-beta"
+    MSEDGE_DEV = "msedge-dev"
+    MSEDGE_CANARY = "msedge-canary"
+
+    COC_COC = "coc_coc"
+    OPERA = "opera"
+    FIREFOX = "firefox"
+
+
+BROWSER_EXECUTABLE_MAP: dict[BrowserName, str] = {
+    BrowserName.COC_COC: (
+        r"C:\Program Files\CocCoc\Browser\Application\browser.exe"
+    ),
+    BrowserName.OPERA: (
+        r"C:\Users\%USERNAME%\AppData\Local\Programs\Opera\opera.exe"
+    ),
+}

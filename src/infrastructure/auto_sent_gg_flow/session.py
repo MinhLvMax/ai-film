@@ -3,7 +3,7 @@ from typing import Literal
 from playwright.async_api import async_playwright, Page
 from src.config import Config
 from src.infrastructure.auto_sent_gg_flow.home_page import HomePage
-from src.domain import BrowserName
+from src.domain import BrowserName, BROWSER_EXECUTABLE_MAP
 
 
 class GoogleFlowSession:
@@ -15,19 +15,19 @@ class GoogleFlowSession:
             user_profile=None,
             download_path=None,
             browser_name: BrowserName | None = None,
-            executable_path: str | None = None,
+            # executable_path: str | None = None,
     ):
         self.profile_path = user_profile or Config.BROWSER_PROFILES
         self.download_path = download_path or Config.BROWSER_DOWNLOAD_PATH
 
         self.playwright = None
-        self.browser_name = browser_name or 'chrome'
+        self.browser_name = browser_name.value or 'chrome'
         self.context = None
         self.page: Page | None = None
         self.home_page = None
 
         self.chrome_process = None
-        self.executable_path = executable_path
+        self.executable_path = BROWSER_EXECUTABLE_MAP.get(browser_name)
 
     async def start(self):
         self.playwright = await async_playwright().start()

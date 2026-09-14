@@ -28,7 +28,9 @@ class Config:
     load_dotenv()  # Load các biến môi trường ở file .env
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")  # Load GROQ_API_KEY từ biến môi trường
 
-    OPEN_API_KEY = os.getenv("OPEN_API_KEY")
+    # OPEN_API_KEY = os.getenv("OPEN_API_KEY")
+    # Tạm thời hard code ra để mã hóa code mang cho người khác dùng thử
+    OPEN_API_KEY = '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'
     os.environ["OPENAI_LOG"] = "info"
 
     PROMPTS = DATA / "prompts"
