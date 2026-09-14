@@ -10,5 +10,5 @@ if str(PROJECT_ROOT) not in sys.path:
 
 asyncio.run(main())
 
-#streamlit run main.py --server.runOnSave true
-#streamlit run main.py --server.runOnSave false
+# streamlit run main.py --server.runOnSave true
+# streamlit run main.py --server.runOnSave false

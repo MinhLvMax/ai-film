@@ -66,3 +66,16 @@ BROWSER_EXECUTABLE_MAP: dict[BrowserName, str] = {
         r"C:\Users\%USERNAME%\AppData\Local\Programs\Opera\opera.exe"
     ),
 }
+
+OPEN_AI_MODEL = [
+        'gpt-4.1-nano',
+        'gpt-4.1-mini',
+        'gpt-5-nano',
+        'gpt-5-mini',
+        'gpt-4',
+        'gpt-3.5-turbo',
+        'gpt-3.5-turbo-0125',
+        'gpt-5.6-luna',
+        'gpt-5.6-terra',
+        'gpt-5.6-sol',
+    ]

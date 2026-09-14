@@ -25,6 +25,8 @@ pandas==3.0.5
 pillow==12.3.0
 playwright==1.62.0
 protobuf==7.36.1
+pyarmor==9.2.7
+pyarmor.cli.core==8.1.2
 pyarrow==25.0.1
 pydantic==2.13.5
 pydantic_core==2.46.5

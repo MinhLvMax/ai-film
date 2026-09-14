@@ -1,5 +1,1 @@
-Write a compelling and well-structured chapter based on the provided chapter information.
-Ensure the content is accurate, logically organized, engaging from the beginning, and flows naturally from one section to the next.
-Use reliable information and avoid inventing facts, events, quotes, or statistics.
-The chapter should provide meaningful value to the audience while maintaining strong narrative flow and reader retention.
-Follow the provided target length as closely as possible.
+Enter the GenChapter prompt here.
