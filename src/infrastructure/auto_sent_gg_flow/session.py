@@ -1,5 +1,3 @@
-import subprocess
-from typing import Literal
 from playwright.async_api import async_playwright, Page
 from src.config import Config
 from src.infrastructure.auto_sent_gg_flow.home_page import HomePage
@@ -21,13 +19,23 @@ class GoogleFlowSession:
         self.download_path = download_path or Config.BROWSER_DOWNLOAD_PATH
 
         self.playwright = None
-        self.browser_name = browser_name.value or 'chrome'
+        self.browser_name = self.browser_name = (
+            browser_name.value
+            if browser_name
+            else "chrome"
+        )
         self.context = None
         self.page: Page | None = None
         self.home_page = None
 
         self.chrome_process = None
-        self.executable_path = BROWSER_EXECUTABLE_MAP.get(browser_name)
+        self.executable_path = self.executable_path = (
+            BROWSER_EXECUTABLE_MAP.get(
+                browser_name
+            )
+            if browser_name
+            else None
+        )
 
     async def start(self):
         self.playwright = await async_playwright().start()
@@ -39,25 +47,15 @@ class GoogleFlowSession:
                 accept_downloads=True,
                 downloads_path=self.download_path,
             )
-
-        elif self.browser_name == "coc_coc":
+        elif self.executable_path:
             self.context = await self.playwright.chromium.launch_persistent_context(
                 user_data_dir=self.profile_path,
                 headless=False,
+                # channel=self.browser_name,
                 executable_path=self.executable_path,
                 accept_downloads=True,
                 downloads_path=self.download_path,
             )
-
-        elif self.browser_name == "opera":
-            self.context = await self.playwright.chromium.launch_persistent_context(
-                user_data_dir=self.profile_path,
-                headless=False,
-                executable_path=self.executable_path,
-                accept_downloads=True,
-                downloads_path=self.download_path,
-            )
-
         else:
             self.context = await self.playwright.chromium.launch_persistent_context(
                 user_data_dir=self.profile_path,

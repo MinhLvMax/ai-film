@@ -16,15 +16,15 @@ class AppState:
         self.extract_chars_prompt = None
         self.extract_chars_model = None
         self.extract_chars_model_index: int | None = None
-        self.characters: list[dict] | None = None
+        self.characters: list[dict] = []
 
         self.extract_shots_prompt = None
         self.extract_shots_model = None
         self.extract_shots_model_index: int | None = None
-        self.shots: list[dict] | None = None
+        self.shots: list[dict] = []
 
         self.style_lock = None
-        self.prompts: list[dict] | None = None
+        self.prompts: list[dict] = []
 
         # self.project_name: str | None = None
         self.project_url: str | None = None

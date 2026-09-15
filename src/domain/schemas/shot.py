@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field
 from src.domain.schemas.camera import Camera
 from src.domain.schemas.subject import SubjectLLMResult
 
+
 class ShotLLMResult(BaseModel):
     """Structured shot data used to build a Veo video-generation prompt."""
 

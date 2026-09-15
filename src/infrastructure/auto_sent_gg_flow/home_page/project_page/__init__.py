@@ -85,9 +85,13 @@ class ProjectPage(BasePage):
         '''Điền và gửi prompt, seting cần phải được cấu hình trước đó vì hàm này chỉ biết điền và gửi'''
         # print('Dừng để debug nút chỉnh sửa')
         # await self.page.pause()
-
+        await self.page.pause()
+        await self.INPUT_PROMPT.fill("")
         await self.INPUT_PROMPT.fill(prompt)
+        await self.page.wait_for_timeout(1000)
         await self.random_time_click(self.SEND_PROMPT, 'Gửi prompt')
+        await self.page.wait_for_timeout(1000)
+        await self.INPUT_PROMPT.fill("")
         return True
 
     async def wait_until_creating_image_below(
