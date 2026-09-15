@@ -85,7 +85,7 @@ class ProjectPage(BasePage):
         '''Điền và gửi prompt, seting cần phải được cấu hình trước đó vì hàm này chỉ biết điền và gửi'''
         # print('Dừng để debug nút chỉnh sửa')
         # await self.page.pause()
-        await self.page.pause()
+        # await self.page.pause()
         await self.INPUT_PROMPT.fill("")
         await self.INPUT_PROMPT.fill(prompt)
         await self.page.wait_for_timeout(1000)
