@@ -29,7 +29,6 @@ class OpenAILLM:
             llm_model: str | None = None,
             reasoning_effort: str | None = None,
     ):
-
         if isinstance(messages, str):
             messages = [{"role": "user", "content": messages}]
 
