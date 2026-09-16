@@ -82,9 +82,15 @@ async def send_prompt_sequentiallys(
             await project_page.fill_and_send_prompt(prompt.get('prompt'))
 
             # Nghỉ ramdom giây trước khi tạo tiếp
-            sleep_time = random.uniform(sleep_time - 10, sleep_time + 10)
-            sleep_time = max(0, sleep_time)
-            for remaining in range(int(sleep_time), 0, -1):
+            min_sleep = max(0, sleep_time - 10)
+            max_sleep = sleep_time + 10
+
+            new_sleep_time = random.uniform(
+                min_sleep,
+                max_sleep
+            )
+            new_sleep_time = max(0, new_sleep_time)
+            for remaining in range(int(new_sleep_time), 0, -1):
                 print(f"\rCòn {remaining}s...", end="", flush=True)
                 await session.page.wait_for_timeout(1000)
 

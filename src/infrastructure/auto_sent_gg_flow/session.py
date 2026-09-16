@@ -40,29 +40,47 @@ class GoogleFlowSession:
     async def start(self):
         self.playwright = await async_playwright().start()
 
+        context_options = {
+            "user_data_dir": self.profile_path,
+            "headless": False,
+            "accept_downloads": True,
+            "downloads_path": self.download_path,
+            "locale": "en-US",
+            "args": [
+                "--lang=en-US"
+            ],
+        }
+
         if self.browser_name == "firefox":
             self.context = await self.playwright.firefox.launch_persistent_context(
-                user_data_dir=self.profile_path,
-                headless=False,
-                accept_downloads=True,
-                downloads_path=self.download_path,
+                # user_data_dir=self.profile_path,
+                # headless=False,
+                # accept_downloads=True,
+                # downloads_path=self.download_path,
+                **context_options
             )
         elif self.executable_path:
             self.context = await self.playwright.chromium.launch_persistent_context(
-                user_data_dir=self.profile_path,
-                headless=False,
-                # channel=self.browser_name,
+                # user_data_dir=self.profile_path,
+                # headless=False,
+                # # channel=self.browser_name,
+                # executable_path=self.executable_path,
+                # accept_downloads=True,
+                # downloads_path=self.download_path,
+
                 executable_path=self.executable_path,
-                accept_downloads=True,
-                downloads_path=self.download_path,
+                **context_options
             )
         else:
             self.context = await self.playwright.chromium.launch_persistent_context(
-                user_data_dir=self.profile_path,
-                headless=False,
+                # user_data_dir=self.profile_path,
+                # headless=False,
+                # channel=self.browser_name,
+                # accept_downloads=True,
+                # downloads_path=self.download_path,
+
                 channel=self.browser_name,
-                accept_downloads=True,
-                downloads_path=self.download_path,
+                **context_options
             )
 
         self.page = self.context.pages[0]

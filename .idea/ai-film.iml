@@ -8,7 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/downloads/embed/python_embed/Lib/site-packages/tenacity" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
     </content>
-    <orderEntry type="jdk" jdkName="D:\projects\ai-film\.venv" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="D:\minhlvfile\pythonproject\ai-film\server\.venv" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

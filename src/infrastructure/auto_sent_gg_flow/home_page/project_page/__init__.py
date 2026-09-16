@@ -32,7 +32,11 @@ class ProjectPage(BasePage):
 
         # Entry nhập prompt
         # self.INPUT_PROMPT = page.get_by_role("paragraph").filter(has_text="What do you want to create?")
-        self.INPUT_PROMPT = page.get_by_role("paragraph").filter(has_text=re.compile(r"^$"))
+        self.INPUT_PROMPT = page.get_by_role("paragraph").filter(has_text=re.compile(r"^$")).first
+
+        self.CLEAR_PROMPT = page.get_by_role("button", name="Clear prompt")
+        '''Nút clear prompt'''
+
         # Nút cài đặt
         # self.SETTING = page.locator("button").filter(
         #     has_text=re.compile(r"(Nano Banana|Video)")
@@ -81,11 +85,22 @@ class ProjectPage(BasePage):
         await self.random_time_click(self.DONE_PROJECT_NAME, 'Hoàn tất đặt tên')
         return True
 
+
+
     async def fill_and_send_prompt(self, prompt):
+
         '''Điền và gửi prompt, seting cần phải được cấu hình trước đó vì hàm này chỉ biết điền và gửi'''
-        # print('Dừng để debug nút chỉnh sửa')
+        # print('Dừng để debug nút nhập prompt')
         # await self.page.pause()
-        # await self.page.pause()
+
+        # Nếu có nút Clear prompt thì bấm để xóa nội dung cũ
+        try:
+            if await self.CLEAR_PROMPT.is_visible():
+                await self.random_time_click(self.CLEAR_PROMPT)
+                await self.page.wait_for_timeout(500)
+        except Exception:
+            pass
+
         await self.INPUT_PROMPT.fill("")
         await self.INPUT_PROMPT.fill(prompt)
         await self.page.wait_for_timeout(1000)
