@@ -100,8 +100,12 @@ async def send_prompt_sequentiallys(
                 print('Có cảnh báo, dừng quá trình')
                 prompt["is_sent"] = False
 
-                await session.clear_cache()
-                await session.close_session()
+                # await session.clear_cache()
+                '''Người dùng nên tự chọn thời điểm để xóa cache bằng tay thì hơn'''
+
+                # await session.close_session()
+                '''Không nên đóng phiên luôn mà để cho người dùng tự xem là lỗi gì'''
+
                 # Debug
                 # print('Dừng để debug')
                 # await session.page.pause()
